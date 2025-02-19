@@ -1,0 +1,14 @@
+.auth-container{
+    background-image: url("./assets/Imgs/auth-bg.png");
+    background-size:cover;
+    background-position: center;
+}
+
+.overlay{
+    background: linear-gradient(rgba(55, 140, 47,0.7),rgba(0, 0, 0, 0.5));
+}
+
+.submit{
+    background-color: #4AA35A !important;
+    color: aliceblue !important;
+}
