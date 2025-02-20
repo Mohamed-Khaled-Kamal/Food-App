@@ -18,12 +18,14 @@ export default function Login() {
   const onSubmit = async(data) =>{
            try {
              let response = await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
+             localStorage.setItem('Token',response.data.token)
              console.log(response);
+             console.log(response.data.token)
              toast.success("Login Success")
              navigate('/dashbord')
            } catch (error) {
              console.log(error)
-             toast.error("Wrong Email and Password!!!!!!!")
+             toast.error("Invalid email or password Please try again!!!!!!!")
            }
   }
 

@@ -19,6 +19,8 @@ import CategoriesList from './Categories/CategoriesList/CategoriesList'
 import CategoriesData from './Categories/CategoriesData/CategoriesData'
 import UsersList from './Users/UsersList/UsersList'
 import { ToastContainer } from 'react-toastify'
+import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute'
+
 
 function App() {
   
@@ -38,7 +40,8 @@ function App() {
     },
     {
       path: '/dashbord',
-      element: <MasterLayout/>,
+      element:<ProtectedRoute><MasterLayout /></ProtectedRoute>  ,
+        
       errorElement:<NotFound/>,
       children:[
         { index: true, element: <Dashbord /> },
@@ -46,7 +49,8 @@ function App() {
         { path: 'recpies-data', element: <RecpiesData/> },
         { path: 'categories', element: <CategoriesList/> },
         { path: 'category', element: <CategoriesData/> },
-        { path: 'Users', element: <UsersList/> },
+        { path: 'Users', element: <UsersList /> },
+        { path: 'change-password', element: <ChangePass/> }
       ]
     }
   ])

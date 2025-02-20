@@ -12,3 +12,34 @@
     background-color: #4AA35A !important;
     color: aliceblue !important;
 }
+
+.side-logo{
+    padding: 15px 3px 50px 2px;
+    
+}
+
+.sidebar-container .ps-sidebar-container{
+    background-color: #1F263E;
+    color: aliceblue;
+    height: 100vh;
+    border-top-right-radius: 50px;
+    font-size: 20px;
+}
+
+.sidebar-container .ps-menu-button:hover{
+    background-color: rgba(47, 140, 96, 0.5) !important;
+    border-left: solid 3px #4AA35A;
+}
+
+.sidebar-container .side-logo .ps-menu-button:hover {
+    background-color: transparent !important;
+    border: none;
+  }
+
+  .log-out{
+    margin-top: 50px;
+  }
+
+  .sidebar-container .ps-menu-icon{
+    font-size: 25px;
+  }
