@@ -13,7 +13,7 @@ export default function MasterLayout() {
               </div>
               <div className='w-100 '>
                   <Navbar />
-                  <Header />
+                  
                   <Outlet />
                   
               </div>
