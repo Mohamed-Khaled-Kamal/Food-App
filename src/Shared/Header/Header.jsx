@@ -3,10 +3,10 @@ import React from 'react'
 export default function Header({title,desc,img}) {
   return (
     <>
-      <div>
+      <div className='px-3 py-2'>
         
       <div className='container-fluid'>
-        <div className="row head-bg text-white px-5">
+        <div className="row head-bg text-white px-5 rounded-4">
 
           <div className="col-md-8 my-auto">
           <div className="title">
