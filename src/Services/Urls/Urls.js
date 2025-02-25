@@ -4,6 +4,9 @@ export const baseUrl = "https://upskilling-egypt.com:3006/api/v1";
 
 export const axiosInstance = axios.create({
     baseURL: baseUrl,
+    headers: {
+        Authorization: localStorage.getItem("Token")
+      }
     
 });
 
@@ -16,9 +19,9 @@ export const USER_URLS = {
 }
 
 export const RECIPES_URLS = {
-    RECIPES_LIST : `${baseUrl}/Recipe/`,
+    RECIPES_LIST : `/Recipe/`,
 }
 
 export const CATEGORIES_URLS = {
-    CATEGORIES_LIST : `${baseUrl}/Category/`,
+    CATEGORIES_LIST : `/Category/`,
 }

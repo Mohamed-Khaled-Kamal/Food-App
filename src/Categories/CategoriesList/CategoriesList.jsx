@@ -20,9 +20,6 @@ export default function CategoriesList() {
     try {
       setLoading(true)
       let respone = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST, {
-        headers: {
-          Authorization: localStorage.getItem("Token")
-        }
       })
       console.log(respone?.data?.data)
       setCategoriesList(respone?.data?.data)

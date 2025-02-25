@@ -23,6 +23,7 @@ export default function RecpiesList() {
         }
       })
       setRecipesList(respone?.data?.data)
+      console.log(respone?.data?.data)
     } catch (error) {
       console.log(error)
     } finally {
