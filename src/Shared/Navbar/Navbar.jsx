@@ -21,7 +21,9 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary border border-0">
+      <div className='p-3'>
+
+      <nav className="navbar navbar-expand-lg bg-body-tertiary border border-0 rounded-3" >
         <div className="container-fluid">
           <button 
             className="navbar-toggler" 
@@ -47,6 +49,8 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
+      </div>
     </>
   );
 }

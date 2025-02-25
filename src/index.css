@@ -47,3 +47,10 @@
   .head-bg{
     background-color: #009247;
   }
+
+
+  /*---------------------Table css---------------------------*/
+
+  .table-head .TC{
+    background-color: #E2E5EB;
+  }

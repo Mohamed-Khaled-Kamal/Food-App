@@ -1,31 +1,25 @@
 import React from 'react'
 
-export default function Header({title,desc,img}) {
+export default function Header({ title, desc, img }) {
   return (
-    <>
-      <div className='px-3 py-2'>
-        
+    <div className='px-3 py-2'>
       <div className='container-fluid'>
-        <div className="row head-bg text-white px-5 rounded-4">
-
-          <div className="col-md-8 my-auto">
-          <div className="title">
-              <h1>{title}</h1>
-              <p>{desc}</p>
-          </div>
+        <div className="head-bg text-white px-5 py-3 rounded-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
+          
+          
+          <div className="title mb-3 mb-md-0">
+            <h1>{title}</h1>
+            <p>{desc}</p>
           </div>
           
-          <div className="col-md-4">
-          <div className="img-container ">
+          
+          <div className="img-container">
             {img}
           </div>
-          </div>
           
         </div>
-
-        </div>
-        
       </div>
-    </>
+    </div>
   )
 }
+

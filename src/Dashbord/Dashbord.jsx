@@ -7,7 +7,7 @@ export default function Dashbord() {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // الحصول على الـ token من الـ localStorage
+  
     const token = localStorage.getItem('Token');
     if (token) {
     try {
