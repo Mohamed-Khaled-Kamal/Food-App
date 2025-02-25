@@ -6,6 +6,7 @@ import NoData from '../../assets/Imgs/No-data.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import Delete from '../../assets/Imgs/delete.png'
+import { axiosInstance, CATEGORIES_URLS } from '../../Services/Urls/Urls'
 
 export default function CategoriesList() {
 
@@ -18,7 +19,7 @@ export default function CategoriesList() {
   const GetAllCategories = async () => { 
     try {
       setLoading(true)
-      let respone = await axios.get('https://upskilling-egypt.com:3006/api/v1/Category/?pageSize=15&pageNumber=1', {
+      let respone = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST, {
         headers: {
           Authorization: localStorage.getItem("Token")
         }
@@ -44,7 +45,7 @@ export default function CategoriesList() {
 
   const handleDeleteConfirm = async () => {
     try {
-      const response = await axios.delete(`https://upskilling-egypt.com:3006/api/v1/Category/${selectedCategory.id}`, {
+      const response = await axiosInstance.delete(`https://upskilling-egypt.com:3006/api/v1/Category/${selectedCategory.id}`, {
         headers: {
           Authorization: localStorage.getItem("Token")
         }
@@ -66,7 +67,7 @@ export default function CategoriesList() {
         img={<img src={headimg} alt="head-img" />}
       />
 
-      <div className='add-categ'>
+      <div className='add-categ px-3'>
         <div className='container-fluid'>
           <div className="d-flex justify-content-between align-items-center">
             <div className="detail my-auto">
@@ -84,7 +85,7 @@ export default function CategoriesList() {
       </div>
 
       <div className="categ-table">
-        <div className="table-head">
+        <div className="table-head px-3">
           <div className="container-fluid">
             <div className='TC d-flex justify-content-between rounded-4 p-4'>
               <div>
@@ -97,7 +98,7 @@ export default function CategoriesList() {
           </div>
         </div>
 
-        <div className="table-content">
+        <div className="table-content px-3">
           <div className="container-fluid">
             {loading ? (
               <div className="d-flex justify-content-center align-items-center" style={{ height: '70vh' }}>

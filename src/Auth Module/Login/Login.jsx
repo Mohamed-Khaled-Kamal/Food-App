@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { axiosInstance, baseUrl,USER_URLS } from '../../Services/Urls/Urls';
 
 
 export default function Login() {
@@ -17,7 +18,7 @@ export default function Login() {
   
   const onSubmit = async(data) =>{
            try {
-             let response = await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
+             let response = await axiosInstance.post(USER_URLS.LOGIN, data)
              localStorage.setItem('Token',response.data.token)
              console.log(response);
              console.log(response.data.token)

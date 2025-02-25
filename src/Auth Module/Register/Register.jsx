@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import logo from '../../assets/Imgs/auth-logo.png';
+import { USER_URLS } from '../../Services/Urls/Urls';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +13,7 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      let response = await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Register', data);
+      let response = await axios.post(USER_URLS.REGISTER, data);
       console.log(response);
       toast.success("Login Success");
       navigate('login');
