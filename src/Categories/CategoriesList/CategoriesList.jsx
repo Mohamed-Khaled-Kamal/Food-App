@@ -176,6 +176,11 @@ export default function CategoriesList() {
 
 
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
+        {/* <div className="d-flex justify-content-end p-2">
+    
+      <i onClick={() => setShowModal(false)} style={{cursor:"pointer"}} class="far fa-times-circle text-danger fs-3 text "></i>
+    
+  </div> */}
         <Modal.Header closeButton>
           <Modal.Title>Add New Category</Modal.Title>
         </Modal.Header>

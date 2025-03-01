@@ -38,7 +38,7 @@ export default function RecpiesList() {
 
   const handleDeleteConfirm = async () => {
     try {
-      await axiosInstance.delete(`https://upskilling-egypt.com:3006/api/v1/Recipe/${selectedRecipe.id}`, {
+      await axiosInstance.delete(RECIPES_URLS.DELETE_RECIPE(selectedRecipe.id), {
         headers: {
           Authorization: localStorage.getItem("Token")
         }
