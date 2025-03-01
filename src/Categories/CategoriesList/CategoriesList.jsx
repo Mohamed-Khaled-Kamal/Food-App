@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Delete from '../../assets/Imgs/delete.png'
 import { axiosInstance, CATEGORIES_URLS } from '../../Services/Urls/Urls'
+import { toast } from 'react-toastify'
 
 export default function CategoriesList() {
 
@@ -45,7 +46,8 @@ export default function CategoriesList() {
             headers: { Authorization: localStorage.getItem("Token") }
         });
         setShowModal(false);
-        setCategoriesList(categoriesList.filter(cat => cat.id !== selectedCategory.id));
+      setCategoriesList(categoriesList.filter(cat => cat.id !== selectedCategory.id));
+      toast.success("Category deleted successfully");
     } catch (error) {
         console.error("Failed to delete category:", error);
     }
@@ -60,6 +62,7 @@ export default function CategoriesList() {
       setCategoriesList([...categoriesList, response.data])
       setShowAddModal(false)
       setNewCategory({ name: '' })
+      toast.success("Category added successfully")
     } catch (error) {
       console.error("Failed to add category:", error)
     }
