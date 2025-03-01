@@ -26,7 +26,7 @@ export default function Login() {
              navigate('/dashbord')
            } catch (error) {
              console.log(error)
-             toast.error("Invalid email or password Please try again!!!!!!!")
+             toast.error(error.response.data.message)
            }
   }
 

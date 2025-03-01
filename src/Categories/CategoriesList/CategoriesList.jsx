@@ -4,7 +4,7 @@ import headimg from '../../assets/Imgs/recipes-head.png'
 import axios from 'axios'
 import NoData from '../../assets/Imgs/No-data.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import Delete from '../../assets/Imgs/delete.png'
 import { axiosInstance, CATEGORIES_URLS } from '../../Services/Urls/Urls'
 
@@ -14,15 +14,14 @@ export default function CategoriesList() {
   const [loading, setLoading] = useState(true) 
   const [showModal, setShowModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [newCategory, setNewCategory] = useState({ name: '' })
 
-  
   const GetAllCategories = async () => { 
     try {
       setLoading(true)
-      let respone = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST, {
-      })
-      console.log(respone?.data?.data)
-      setCategoriesList(respone?.data?.data)
+      let response = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST)
+      setCategoriesList(response?.data?.data)
     } catch (error) {
       console.log(error)
     } finally {
@@ -34,25 +33,35 @@ export default function CategoriesList() {
     GetAllCategories()
   },[])
 
-  
   const handleDeleteClick = (category) => {
     setSelectedCategory(category)
     setShowModal(true)
   }
 
+
   const handleDeleteConfirm = async () => {
     try {
-      const response = await axiosInstance.delete(`https://upskilling-egypt.com:3006/api/v1/Category/${selectedCategory.id}`, {
-        headers: {
-          Authorization: localStorage.getItem("Token")
-        }
-      })
-      console.log("Category deleted:", response.data)
-      setShowModal(false)
-      
-      setCategoriesList(categoriesList.filter(cat => cat.id !== selectedCategory.id))
+        await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(selectedCategory.id), {
+            headers: { Authorization: localStorage.getItem("Token") }
+        });
+        setShowModal(false);
+        setCategoriesList(categoriesList.filter(cat => cat.id !== selectedCategory.id));
     } catch (error) {
-      console.error("Failed to delete category:", error)
+        console.error("Failed to delete category:", error);
+    }
+};
+
+
+  const handleAddCategory = async () => {
+    try {
+      const response = await axiosInstance.post(CATEGORIES_URLS.ADD_CATEGORY, newCategory, {
+        headers: { Authorization: localStorage.getItem("Token") }
+      })
+      setCategoriesList([...categoriesList, response.data])
+      setShowAddModal(false)
+      setNewCategory({ name: '' })
+    } catch (error) {
+      console.error("Failed to add category:", error)
     }
   }
 
@@ -73,7 +82,7 @@ export default function CategoriesList() {
             </div>
 
             <div className="add-btn">
-              <button className='btn btn-success'>
+              <button className='btn btn-success' onClick={() => setShowAddModal(true)}>
                 Add New Category
               </button>
             </div>
@@ -142,8 +151,7 @@ export default function CategoriesList() {
         </div>
       </div>
 
-
-<Modal
+      <Modal
   show={showModal}
   onHide={() => setShowModal(false)}
   centered
@@ -166,7 +174,23 @@ export default function CategoriesList() {
   </Modal.Footer>
 </Modal>
 
+
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Category Name</Form.Label>
+              <Form.Control type="text" value={newCategory.name} onChange={(e) => setNewCategory({ name: e.target.value })} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleAddCategory}>Add</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
-
