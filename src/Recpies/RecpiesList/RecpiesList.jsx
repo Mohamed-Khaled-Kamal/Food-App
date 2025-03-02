@@ -1,67 +1,64 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../Shared/Header/Header'
-import headimg from '../../assets/Imgs/recipes-head.png'
-import axios from 'axios'
-import NoData from '../../assets/Imgs/No-data.png'
-import { Button, Modal } from 'react-bootstrap'
-import Delete from '../../assets/Imgs/Delete-recipe.png'
-import { axiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls'
+import React, { useEffect, useState } from 'react';
+import Header from '../../Shared/Header/Header';
+import headimg from '../../assets/Imgs/recipes-head.png';
+import axios from 'axios';
+import NoData from '../../assets/Imgs/No-data.png';
+import { Button, Modal } from 'react-bootstrap';
+import Delete from '../../assets/Imgs/Delete-recipe.png';
+import { axiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls';
+import { toast } from 'react-toastify';
 
+export default function RecipesList() {
+  const [recipesList, setRecipesList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(null); // للتحكم في فتح القائمة
 
-export default function RecpiesList() {
-  const [recipesList, setRecipesList] = useState([])
-  const [loading, setLoading] = useState(true) 
-  const [showModal, setShowModal] = useState(false)
-  const [selectedRecipe, setSelectedRecipe] = useState(null)
-  
-  const GetAllRecipes = async () => { 
+  const fetchRecipes = async () => {
     try {
-      setLoading(true)
-      let respone = await axiosInstance.get(RECIPES_URLS.RECIPES_LIST, {
-        headers: {
-          Authorization: localStorage.getItem("Token")
-        }
-      })
-      setRecipesList(respone?.data?.data)
-      console.log(respone?.data?.data)
+      setLoading(true);
+      let response = await axiosInstance.get(RECIPES_URLS.RECIPES_LIST, {
+        headers: { Authorization: localStorage.getItem("Token") },
+      });
+      setRecipesList(response?.data?.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleDeleteClick = (recipe) => {
-    setSelectedRecipe(recipe)
-    setShowModal(true)
-  }
+    setSelectedRecipe(recipe);
+    setShowModal(true);
+  };
 
-  const handleDeleteConfirm = async () => {
+  const confirmDeleteRecipe = async () => {
     try {
       await axiosInstance.delete(RECIPES_URLS.DELETE_RECIPE(selectedRecipe.id), {
-        headers: {
-          Authorization: localStorage.getItem("Token")
-        }
-      })
-      setRecipesList(recipesList.filter((recipe) => recipe.id !== selectedRecipe.id))
-      setShowModal(false)
+        headers: { Authorization: localStorage.getItem("Token") },
+      });
+      setRecipesList(recipesList.filter((recipe) => recipe.id !== selectedRecipe.id));
+      setShowModal(false);
+      toast.success("Recipe deleted successfully")
     } catch (error) {
-      console.error("Error deleting recipe:", error)
+      console.error("Error deleting recipe:", error);
     }
-  }
+  };
 
-  useEffect(() => { 
-    GetAllRecipes()
-  }, [])
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
 
   return (
     <>
       <Header 
         title="Recipes Items"
-        desc="You can now add your items that any users can order it form Application and you can edit"
+        desc="You can now add your items that any user can order from the Application, and you can edit."
         img={<img src={headimg} alt="head-img" />}
       />
-      
+
       <div className='add-categ px-3'>
         <div className='container-fluid'>
           <div className="d-flex justify-content-between align-items-center">
@@ -71,9 +68,7 @@ export default function RecpiesList() {
             </div>
 
             <div className="add-btn">
-              <button className='btn btn-success'>
-                Add New Recipe
-              </button>
+              <button className='btn btn-success'>Add New Recipe</button>
             </div>
           </div>
         </div>
@@ -83,16 +78,12 @@ export default function RecpiesList() {
         <div className="table-head px-3">
           <div className="container-fluid">
             <div className='TC d-flex justify-content-between rounded-4 p-4'>
-              <div>
-                <h4>Name</h4>
-              </div>
-              <div>
-                <h4>Actions</h4>
-              </div>
+              <h4>Name</h4>
+              <h4>Actions</h4>
             </div>
           </div>
         </div>
-      
+
         <div className="table-content px-3">
           <div className="container-fluid">
             {loading ? (
@@ -102,7 +93,7 @@ export default function RecpiesList() {
                 </div>
               </div>
             ) : recipesList.length > 0 ? (
-              <table className="table">
+              <table className="table text-center">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -125,13 +116,33 @@ export default function RecpiesList() {
                       </td>
                       <td>{recipe.price}</td>
                       <td>{recipe.description}</td>
-                      <td>
+                      <td className="position-relative">
                         <i 
-                          className="fas fa-trash-alt text-danger mx-2" 
-                          onClick={() => handleDeleteClick(recipe)} 
-                          style={{ cursor: 'pointer' }}
+                          className="fas fa-ellipsis-h cursor-pointer"
+                          onClick={() => setDropdownOpen(dropdownOpen === recipe.id ? null : recipe.id)}
+                          style={{ fontSize: '1.3rem', cursor: 'pointer' }}
                         ></i>
-                        <i className="fas fa-edit text-warning mx-2"></i>
+
+                        {/* Dropdown Menu */}
+                        {dropdownOpen === recipe.id && (
+                          <div className="dropdown-menu show position-absolute bg-light shadow rounded p-2" style={{ right: 0, top: '1.5rem' }}>
+                            
+                            <button className="dropdown-item  d-flex align-items-center">
+                            <i class="far fa-eye me-2"></i> View
+                            </button>
+
+                            <button className="dropdown-item  d-flex align-items-center">
+                              <i className="fas fa-edit me-2"></i> Edit
+                            </button>
+
+                            <button 
+                              className="dropdown-item d-flex align-items-center"
+                              onClick={() => handleDeleteClick(recipe)}
+                            >
+                              <i className="fas fa-trash-alt me-2"></i> Delete
+                            </button>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -149,19 +160,21 @@ export default function RecpiesList() {
       {/* Modal for Delete Confirmation */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <div className="d-flex justify-content-end p-2">
-        <i onClick={() => setShowModal(false)} style={{cursor:"pointer"}} class="far fa-times-circle text-danger fs-3 text "></i>
+          <i 
+            onClick={() => setShowModal(false)} 
+            style={{ cursor: "pointer" }} 
+            className="far fa-times-circle text-danger fs-3"
+          ></i>
         </div>
         <Modal.Body>
           <div className="d-flex justify-content-center align-items-center">
-               <img src={Delete} alt="delete item" />
-             </div>
+            <img src={Delete} alt="delete item" />
+          </div>
         </Modal.Body>
         <Modal.Footer>
-        <button type="button" class="btn btn-outline-danger" onClick={handleDeleteConfirm}>
-            Delete
-          </button>
+          <Button variant="outline-danger" onClick={confirmDeleteRecipe}>Delete this item</Button>
         </Modal.Footer>
       </Modal>
     </>
-  )
+  );
 }

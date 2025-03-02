@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Header({ title, desc, img }) {
   return (
-    <div className='px-3 py-2'>
+    <div className='px-3 py-2 mb-3'>
       <div className='container-fluid'>
         <div className="head-bg text-white px-5 py-3 rounded-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
           

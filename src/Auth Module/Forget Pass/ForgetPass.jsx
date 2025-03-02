@@ -37,7 +37,7 @@ export default function ForgetPass() {
               <img className='w-50' src={logo} alt="Logo" />
             </div>
 
-            <div className="title">
+            <div className="title-auth">
               <h4>Forgot Your Password?</h4>
               <p className='text-muted'>No worries! Please enter your email and we will send a password reset link.</p>
             </div>

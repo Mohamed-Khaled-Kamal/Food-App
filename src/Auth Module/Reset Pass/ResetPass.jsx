@@ -448,8 +448,8 @@ export default function ResetPass() {
   let navigate = useNavigate();
   let location = useLocation();
 
-  const email = location.state?.email || ""; // استرجاع الإيميل من Forget Password
-  
+  const email = location.state?.email || ""; 
+
   const onSubmit = async (data) => {
     try {
       let response = await axiosInstance.post(USER_URLS.RESET_PASSWORD, data);
@@ -473,14 +473,14 @@ export default function ResetPass() {
               <img className='w-50' src={logo} alt="Logo" />
             </div>
 
-            <div className="title">
+            <div className="title-auth">
               <h4>Reset Password</h4>
               <p className='text-muted'>Please Enter Your OTP or Check Your Inbox</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className='mb-3'>
               
-              {/* Email Input (غير قابل للتعديل) */}
+              
               <div className="input-group">
                 <span className='input-group-text bg-white border-end-0'>
                   <i className="fas fa-at"></i>

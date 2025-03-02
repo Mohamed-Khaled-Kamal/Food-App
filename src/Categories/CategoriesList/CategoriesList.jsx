@@ -1,78 +1,76 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../Shared/Header/Header'
-import headimg from '../../assets/Imgs/recipes-head.png'
-import axios from 'axios'
-import NoData from '../../assets/Imgs/No-data.png'
+import React, { useEffect, useState } from 'react';
+import Header from '../../Shared/Header/Header';
+import headimg from '../../assets/Imgs/recipes-head.png';
+import axios from 'axios';
+import NoData from '../../assets/Imgs/No-data.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
-import Delete from '../../assets/Imgs/delete.png'
-import { axiosInstance, CATEGORIES_URLS } from '../../Services/Urls/Urls'
-import { toast } from 'react-toastify'
+import Delete from '../../assets/Imgs/delete.png';
+import { axiosInstance, CATEGORIES_URLS } from '../../Services/Urls/Urls';
+import { toast } from 'react-toastify';
 
 export default function CategoriesList() {
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newCategory, setNewCategory] = useState({ name: '' });
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
-  const [categoriesList, setCategoriesList] = useState([])
-  const [loading, setLoading] = useState(true) 
-  const [showModal, setShowModal] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [newCategory, setNewCategory] = useState({ name: '' })
-
-  const GetAllCategories = async () => { 
+  const GetAllCategories = async () => {
     try {
-      setLoading(true)
-      let response = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST)
-      setCategoriesList(response?.data?.data)
+      setLoading(true);
+      let response = await axiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST);
+      setCategoriesList(response?.data?.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-  
-  useEffect(() => { 
-    GetAllCategories()
-  },[])
+  };
+
+  useEffect(() => {
+    GetAllCategories();
+  }, []);
 
   const handleDeleteClick = (category) => {
-    setSelectedCategory(category)
-    setShowModal(true)
-  }
-
+    setSelectedCategory(category);
+    setShowModal(true);
+  };
 
   const handleDeleteConfirm = async () => {
     try {
-        await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(selectedCategory.id), {
-            headers: { Authorization: localStorage.getItem("Token") }
-        });
-        setShowModal(false);
+      await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(selectedCategory.id), {
+        headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` }
+      });
+      setShowModal(false);
       setCategoriesList(categoriesList.filter(cat => cat.id !== selectedCategory.id));
       toast.success("Category deleted successfully");
     } catch (error) {
-        console.error("Failed to delete category:", error);
+      console.error("Failed to delete category:", error);
     }
-};
-
+  };
 
   const handleAddCategory = async () => {
     try {
       const response = await axiosInstance.post(CATEGORIES_URLS.ADD_CATEGORY, newCategory, {
-        headers: { Authorization: localStorage.getItem("Token") }
-      })
-      setCategoriesList([...categoriesList, response.data])
-      setShowAddModal(false)
-      setNewCategory({ name: '' })
-      toast.success("Category added successfully")
+        headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` }
+      });
+      setCategoriesList([...categoriesList, response.data]);
+      setShowAddModal(false);
+      setNewCategory({ name: '' });
+      toast.success("Category added successfully");
     } catch (error) {
-      console.error("Failed to add category:", error)
+      console.error("Failed to add category:", error);
     }
-  }
+  };
 
   return (
     <>
       <Header 
         title={"Categories Items"}
-        desc={"You can now add your items that any user can order it from the Application and you can edit"}
+        desc={"You can now add your items that any user can order it from the application and you can edit."}
         img={<img src={headimg} alt="head-img" />}
       />
 
@@ -83,7 +81,6 @@ export default function CategoriesList() {
               <h2>Categories Table Details</h2>
               <p>You can check all details</p>
             </div>
-
             <div className="add-btn">
               <button className='btn btn-success' onClick={() => setShowAddModal(true)}>
                 Add New Category
@@ -116,14 +113,14 @@ export default function CategoriesList() {
                 </div>
               </div>
             ) : categoriesList.length > 0 ? (
-              <table className="table">
+              <table className="table text-center">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Create Date</th>
-                    <th scope="col">Actions</th>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Create Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -133,13 +130,32 @@ export default function CategoriesList() {
                       <td>{category.id}</td>
                       <td>{category.name}</td>
                       <td>{category.creationDate}</td>
-                      <td>
+                      <td className="position-relative">
                         <i 
-                          className="fas fa-trash-alt text-danger mx-2" 
-                          onClick={() => handleDeleteClick(category)} 
-                          style={{ cursor: 'pointer' }}
+                          className="fas fa-ellipsis-h" 
+                          style={{ cursor: 'pointer' }} 
+                          onClick={() => setDropdownOpen(dropdownOpen === category.id ? null : category.id)}
                         ></i>
-                        <i className="fas fa-edit text-warning mx-2"></i>
+
+                        {dropdownOpen === category.id && (
+                          <div className="dropdown-menu show position-absolute" style={{ right: 0 }}>
+
+                            <button className="dropdown-item  d-flex align-items-center">
+                            <i class="far fa-eye me-2"></i> View
+                            </button>
+
+                            <button className="dropdown-item  d-flex align-items-center">
+                              <i className="fas fa-edit me-2"></i> Edit
+                            </button>
+
+                            <button 
+                              className="dropdown-item  d-flex align-items-center" 
+                              onClick={() => handleDeleteClick(category)}
+                            >
+                              <i className="fas fa-trash-alt me-2"></i> Delete
+                            </button>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -171,19 +187,13 @@ export default function CategoriesList() {
     </div>
   </Modal.Body>
   <Modal.Footer>
-          <button type="button" class="btn btn-outline-danger" onClick={handleDeleteConfirm}>
+          <button class="btn btn-outline-danger" onClick={handleDeleteConfirm}>
             Delete
           </button>
   </Modal.Footer>
 </Modal>
 
-
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
-        {/* <div className="d-flex justify-content-end p-2">
-    
-      <i onClick={() => setShowModal(false)} style={{cursor:"pointer"}} class="far fa-times-circle text-danger fs-3 text "></i>
-    
-  </div> */}
         <Modal.Header closeButton>
           <Modal.Title>Add New Category</Modal.Title>
         </Modal.Header>
@@ -191,14 +201,20 @@ export default function CategoriesList() {
           <Form>
             <Form.Group>
               <Form.Label>Category Name</Form.Label>
-              <Form.Control type="text" value={newCategory.name} onChange={(e) => setNewCategory({ name: e.target.value })} />
+              <Form.Control 
+                type="text" 
+                value={newCategory.name} 
+                onChange={(e) => setNewCategory({ name: e.target.value })} 
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={handleAddCategory}>Add</Button>
+          <Button variant="success" onClick={handleAddCategory}>
+            Add
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
-  )
+  );
 }

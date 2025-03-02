@@ -43,14 +43,39 @@
   .sidebar-container .ps-menu-icon{
     font-size: 25px;
   }
+
+  .butn{
+    background-color: #009247 !important;
+  }
+
+  .dropdown-menu i{
+    color: #009247;
+  }
+
 /* ------------------------Head css------------------------*/
   .head-bg{
     background-color: #009247;
+    background-image: url('./assets/Imgs/Ellipse\ 215.png');
+    background-attachment: fixed;
+    background-position: 10%;
   }
 
+  .title{
+    width: 37%;
+  }
 
   /*---------------------Table css---------------------------*/
 
   .table-head .TC{
     background-color: #E2E5EB;
+  }
+
+  /*-----------------------dashbord------------------------*/
+
+  .dsh{
+    background-color: #F0FFEF;
+  }
+  
+  .dsh-title{
+    width: 40%;
   }

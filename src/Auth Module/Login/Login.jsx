@@ -43,7 +43,7 @@ export default function Login() {
                 <img className='w-50' src={logo} alt="" />
               </div>
 
-              <div className="title">
+              <div className="title-auth">
                 <h4>Log In</h4>
                 <p className='text-muted'>Welcome Back! Please enter your details</p>
               </div>

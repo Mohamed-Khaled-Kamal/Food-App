@@ -31,7 +31,7 @@ export default function Register() {
             <div className='logo-container text-center mb-2'>
               <img className='w-50' src={logo} alt="" />
             </div>
-            <div className="title">
+            <div className="title-auth">
               <h4>Register</h4>
               <p className='text-muted'>Welcome Back! Please enter your details</p>
             </div>
