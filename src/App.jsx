@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+// import viteLogo from "/vite.svg";
+// import viteLogo from "./assets/vite.svg";
+
+
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AuthLayout from './Shared/AuthLayout/AuthLayout'
@@ -20,6 +24,7 @@ import CategoriesData from './Categories/CategoriesData/CategoriesData'
 import UsersList from './Users/UsersList/UsersList'
 import { ToastContainer } from 'react-toastify'
 import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute'
+import RecpiesForm from './RecpiesForm/RecpiesForm'
 
 
 function App() {
@@ -46,7 +51,8 @@ function App() {
       children:[
         { index: true, element: <Dashbord /> },
         { path: 'recpies', element: <RecpiesList/> },
-        { path: 'recpies-data', element: <RecpiesData/> },
+        { path: 'recpies-data', element: <RecpiesData /> },
+        { path: 'recpies-form', element: <RecpiesForm/> },
         { path: 'categories', element: <CategoriesList/> },
         { path: 'category', element: <CategoriesData/> },
         { path: 'Users', element: <UsersList /> },

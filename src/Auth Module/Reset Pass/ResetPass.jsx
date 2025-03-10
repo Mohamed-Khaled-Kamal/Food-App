@@ -439,6 +439,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { USER_URLS } from '../../Services/Urls/Urls';
 import {axiosInstance} from '../../Services/Urls/Urls';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../Services/Urls/Validations';
 
 export default function ResetPass() {
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -486,7 +487,7 @@ export default function ResetPass() {
                   <i className="fas fa-at"></i>
                 </span>
                 <input 
-                  {...register("email")}
+                  {...register("email",EMAIL_VALIDATION)}
                   type="email" 
                   className="form-control" 
                   defaultValue={email} 
@@ -513,13 +514,7 @@ export default function ResetPass() {
                   <i className="fas fa-lock"></i>
                 </span>
                 <input 
-                  {...register("password", {
-                    required: 'Field is Required',
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    }
-                  })} 
+                  {...register("password", PASSWORD_VALIDATION)} 
                   type={showNewPassword ? "text" : "password"} 
                   className="form-control border-end-0" 
                   placeholder="New password" 

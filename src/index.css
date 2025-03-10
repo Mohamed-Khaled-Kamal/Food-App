@@ -79,3 +79,14 @@
   .dsh-title{
     width: 40%;
   }
+
+  /*------------recipe-form--------------------*/
+
+  .recipe-form input{
+     background-color: #F7F7F7;
+     border: none;
+  }
+
+  .drag input{
+    border: dashed !important;
+  }

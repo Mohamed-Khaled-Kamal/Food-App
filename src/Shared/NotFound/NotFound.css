@@ -1,0 +1,9 @@
+
+.Not-Found{
+    background-image: url(/src/assets/Imgs/Vector.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: right;
+    background-position-y: center;
+    background-size: 70%;
+}

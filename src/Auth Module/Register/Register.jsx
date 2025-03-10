@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import logo from '../../assets/Imgs/auth-logo.png';
 import { USER_URLS } from '../../Services/Urls/Urls';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../Services/Urls/Validations';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +48,7 @@ export default function Register() {
                 <div className="col-md-6">
                 <div className="input-group">
                   <span className='input-group-text'><i class="fas fa-at"></i></span>
-                  <input {...register("email", { required: 'Field is Required' })} type="email" className="form-control" placeholder='Email' />
+                  <input {...register("email", EMAIL_VALIDATION)} type="email" className="form-control" placeholder='Email' />
                   {errors.email && <span className='text-danger'>{errors.email.message}</span>}
                 </div>
                 </div>
@@ -76,14 +77,8 @@ export default function Register() {
       <span className="input-group-text bg-white">
         <i className="fas fa-lock"></i>
       </span>
-                  <input {...register("password",
-                    {
-                      required: 'Field is Required',
-                      minLength: {
-                        value: 8,
-                        message: "password must be at least 8 characters",
-                      }
-                     })} type={showPassword ? "text" : "password"} className="form-control border-end-0" id="exampleInputPassword" placeholder="Enter your password" />
+                  <input {...register("password",PASSWORD_VALIDATION
+                   )} type={showPassword ? "text" : "password"} className="form-control border-end-0" id="exampleInputPassword" placeholder="Enter your password" />
       <span
         className="btn btn-outline-secondary border-start-0 border-secondary-subtle"
         type="button"

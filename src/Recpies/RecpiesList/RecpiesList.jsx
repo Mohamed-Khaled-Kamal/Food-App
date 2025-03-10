@@ -7,13 +7,14 @@ import { Button, Modal } from 'react-bootstrap';
 import Delete from '../../assets/Imgs/Delete-recipe.png';
 import { axiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls';
 import { toast } from 'react-toastify';
+import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation'
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(null); // للتحكم في فتح القائمة
+  const [dropdownOpen, setDropdownOpen] = useState(null); 
 
   const fetchRecipes = async () => {
     try {
@@ -54,7 +55,11 @@ export default function RecipesList() {
   return (
     <>
       <Header 
-        title="Recipes Items"
+        title={
+          <>
+            Recipes <span style={{color:"#DFE0E0",fontWeight:"100"}}>Items</span>
+          </>
+        }
         desc="You can now add your items that any user can order from the Application, and you can edit."
         img={<img src={headimg} alt="head-img" />}
       />
@@ -157,8 +162,18 @@ export default function RecipesList() {
         </div>
       </div>
 
+      
       {/* Modal for Delete Confirmation */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+
+      <DeleteConfirmation
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        handleDeleteConfirm={confirmDeleteRecipe}
+        img={Delete}
+        btnName='Delete this Item'
+      />
+      
+      {/* <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <div className="d-flex justify-content-end p-2">
           <i 
             onClick={() => setShowModal(false)} 
@@ -174,7 +189,7 @@ export default function RecipesList() {
         <Modal.Footer>
           <Button variant="outline-danger" onClick={confirmDeleteRecipe}>Delete this item</Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

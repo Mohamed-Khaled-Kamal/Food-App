@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { axiosInstance, baseUrl,USER_URLS } from '../../Services/Urls/Urls';
+import { axiosInstance, baseUrl, USER_URLS } from '../../Services/Urls/Urls';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../Services/Urls/Validations';
+
 
 
 export default function Login() {
@@ -53,14 +55,8 @@ export default function Login() {
                   <span className='input-group-text bg-white border-end-0'>
                   <i className="fas fa-at"></i>
                   </span>
-                  <input {...register("email",
-                    {
-                      required: 'Field is Required',
-                      pattern: {
-                        value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                        message:"please enter valid mail"
-                      }
-                     })} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Enter your Email'></input>
+                  <input {...register("email",EMAIL_VALIDATION
+                    )} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Enter your Email'></input>
                 </div>
                 {errors.email && <span className='text-danger'>{errors.email.message}</span>}
 
@@ -68,14 +64,8 @@ export default function Login() {
       <span className="input-group-text bg-white">
         <i className="fas fa-lock"></i>
       </span>
-                  <input {...register("password",
-                    {
-                      required: 'Field is Required',
-                      minLength: {
-                        value: 8,
-                        message: "password must be at least 8 characters",
-                      }
-                     })} type={showPassword ? "text" : "password"} className="form-control border-end-0" id="exampleInputPassword" placeholder="Enter your password" />
+                  <input {...register("password",PASSWORD_VALIDATION
+                    )} type={showPassword ? "text" : "password"} className="form-control border-end-0" id="exampleInputPassword" placeholder="Enter your password" />
       <span
         className="btn btn-outline-secondary border-start-0 border-secondary-subtle"
         type="button"
