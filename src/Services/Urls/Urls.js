@@ -16,7 +16,10 @@ export const USER_URLS = {
     FORGET_PASSWORD: `/Users/Reset/Request`,
     RESET_PASSWORD: `/Users/Reset`,
     CHANGE_PASSWORD: `/Users/ChangePassword`,
-    GET_USER: (id)=> `/users/${id}`,
+    GET_USER: (id) => `/users/${id}`,
+    USERS_LIST: `/Users/`,
+    DELETE_USER: (id) => `/Users/${id}`,
+    EDIT_USER: (id) => `/Users/${id}`,
 }
 
 export const RECIPES_URLS = {
