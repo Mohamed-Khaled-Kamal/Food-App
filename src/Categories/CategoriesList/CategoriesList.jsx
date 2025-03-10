@@ -708,7 +708,7 @@ export default function CategoriesList() {
   const handleEditClick = (category) => {
     setCategoryToEdit(category);
     setShowAddModal(true);
-    console.log("Editing Category:", category); // ✅ تحقق مما يتم إرساله
+    console.log("Editing Category:", category);
 
   };
 
@@ -725,29 +725,6 @@ export default function CategoriesList() {
       console.error("Failed to update category:", error);
     }
   };
-
-//   const handleEditCategory = async (updatedCategory) => {
-//     if (!categoryToEdit) return; // 🔥 تجنب الخطأ إذا لم يتم اختيار فئة
-
-//     try {
-//         await axiosInstance.put(
-//             CATEGORIES_URLS.EDIT_CATEGORY(categoryToEdit.id), 
-//             { id: categoryToEdit.id, name: updatedCategory.name }, // ✅ أرسل الـ ID
-//             {
-//                 headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` }
-//             }
-//         );
-
-//         setCategoriesList(categoriesList.map(cat => 
-//             cat.id === categoryToEdit.id ? { ...cat, ...updatedCategory } : cat
-//         ));
-
-//         setShowAddModal(false);
-//         toast.success("Category updated successfully");
-//     } catch (error) {
-//         console.error("Failed to update category:", error);
-//     }
-// };
 
 
   return (
@@ -823,10 +800,7 @@ export default function CategoriesList() {
                       <td>{category.id}</td>
                       <td>{category.name}</td>
                       <td>{category.creationDate}</td>
-                      {/* <td>
-                        <button className="btn btn-warning me-2" onClick={() => handleEditClick(category)}>Edit</button>
-                        <button className="btn btn-danger" onClick={() => handleDeleteClick(category)}>Delete</button>
-                      </td> */}
+                      
                       <td className="position-relative">
   <i
     className="fas fa-ellipsis-h"
