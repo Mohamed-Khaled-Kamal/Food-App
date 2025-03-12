@@ -684,6 +684,7 @@ export default function CategoriesList() {
       await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(selectedCategory.id), {
         headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` }
       });
+      
       setShowDeleteModal(false);
       setCategoriesList(categoriesList.filter((cat) => cat.id !== selectedCategory.id));
       toast.success("Category deleted successfully");
@@ -770,6 +771,7 @@ export default function CategoriesList() {
         handleDeleteConfirm={handleDeleteConfirm}
         title="Delete Category" 
         message={`Are you sure you want to delete the category "${selectedCategory?.name}"?`} 
+        btnName="Delete Item"
         img={Delete}
       />
 

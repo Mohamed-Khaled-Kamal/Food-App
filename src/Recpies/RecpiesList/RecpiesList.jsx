@@ -8,6 +8,7 @@ import Delete from '../../assets/Imgs/Delete-recipe.png';
 import { axiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls';
 import { toast } from 'react-toastify';
 import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation'
+import { Link } from 'react-router-dom';
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
@@ -73,7 +74,7 @@ export default function RecipesList() {
             </div>
 
             <div className="add-btn">
-              <button className='btn btn-success'>Add New Recipe</button>
+              <Link to={"/dashbord/recpies-form"} className='btn btn-success'>Add New Recipe</Link>
             </div>
           </div>
         </div>
@@ -173,23 +174,6 @@ export default function RecipesList() {
         btnName='Delete this Item'
       />
       
-      {/* <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <div className="d-flex justify-content-end p-2">
-          <i 
-            onClick={() => setShowModal(false)} 
-            style={{ cursor: "pointer" }} 
-            className="far fa-times-circle text-danger fs-3"
-          ></i>
-        </div>
-        <Modal.Body>
-          <div className="d-flex justify-content-center align-items-center">
-            <img src={Delete} alt="delete item" />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={confirmDeleteRecipe}>Delete this item</Button>
-        </Modal.Footer>
-      </Modal> */}
     </>
   );
 }

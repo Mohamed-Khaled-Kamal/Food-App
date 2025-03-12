@@ -36,7 +36,7 @@ export default function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* ✅ شريط البحث مع الأيقونة داخل input بدون حواف */}
+         
           <div className="collapse navbar-collapse" id="navbarNav">
             <div className="input-group me-auto bg-white  rounded-3" style={{ maxWidth: '500px' }}>
               <span className="input-group-text" style={{ 
@@ -59,7 +59,7 @@ export default function Navbar() {
               />
             </div>
 
-            {/* ✅ اسم المستخدم على الجهة اليمنى */}
+            
             <ul className="navbar-nav">
               
               <li className="nav-item d-flex align-items-center">
@@ -75,10 +75,10 @@ export default function Navbar() {
 
             </ul>
             <div className='mx-3'>
-            <i class="fa-solid fa-angle-down"></i>
+            <i className="fa-solid fa-angle-down"></i>
            </div>
             <div className='mx-2'>
-            <i class="fa-solid fa-bell"></i>
+            <i className="fa-solid fa-bell"></i>
            </div>
           </div>
         </div>

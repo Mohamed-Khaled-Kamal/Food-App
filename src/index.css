@@ -55,10 +55,61 @@
 /* ------------------------Head css------------------------*/
   .head-bg{
     background-color: #009247;
-    background-image: url('./assets/Imgs/Ellipse\ 215.png');
-    background-attachment: fixed;
-    background-position: 10%;
+    background-image: url('./assets/Imgs/Ellipse 215.png');
+    background-image: url(./assets/Imgs/Ellipse217.png);
+    /* background-attachment: fixed; */
+    background-position: center;
+    background-repeat: no-repeat;
   }
+
+  .head-bg {
+    /* background-color: #009247; 
+    background-image: 
+        url('./assets/Imgs/Ellipse215.png'), 
+        url('./assets/Imgs/Ellipse217.png'), 
+        url('./assets/Imgs/Ellipse215.png'), 
+        url('./assets/Imgs/Ellipse217.png'),
+        url('./assets/Imgs/Ellipse217.png'),
+        url('./assets/Imgs/Ellipse217.png');
+        
+    
+    background-position: 
+        left 20px top 30px, 
+        right 50px center,  
+        right bottom, 
+        left 20px bottom 30px, 
+        left 50px top,  
+        right bottom;  */
+        background-color: #009247;
+background-image: 
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'), 
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'),
+    url('./assets/Imgs/Ellipse217.png'),
+    url('./assets/Imgs/Ellipse217.png');
+
+background-position: 
+left -24px top 166px,    /* الدائرة في الأعلى يسار */
+right 394px center,     /* الدائرة في اليمين منتصف */
+right -11px bottom 40px, /* الدائرة في الأسفل يمين */
+left 60px bottom 20px,  /* الدائرة في الأسفل يسار */
+left 100px top 30px,   /* دائرة إضافية في الأعلى */
+right 37px bottom 10px;
+background-repeat: no-repeat;
+background-size: auto;
+
+    
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    /* background-size: auto, auto, 40%;  */
+    padding: 40px;
+    border-radius: 12px; 
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 
   .title{
     width: 37%;
