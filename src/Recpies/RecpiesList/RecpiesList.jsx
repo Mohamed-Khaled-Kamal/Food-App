@@ -5,7 +5,7 @@ import axios from 'axios';
 import NoData from '../../assets/Imgs/No-data.png';
 import { Button, Modal } from 'react-bootstrap';
 import Delete from '../../assets/Imgs/Delete-recipe.png';
-import { axiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls';
+import { axiosInstance, privateAxiosInstance, RECIPES_URLS } from '../../Services/Urls/Urls';
 import { toast } from 'react-toastify';
 import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation'
 import { Link } from 'react-router-dom';
@@ -20,9 +20,7 @@ export default function RecipesList() {
   const fetchRecipes = async () => {
     try {
       setLoading(true);
-      let response = await axiosInstance.get(RECIPES_URLS.RECIPES_LIST, {
-        headers: { Authorization: localStorage.getItem("Token") },
-      });
+      let response = await privateAxiosInstance.get(RECIPES_URLS.RECIPES_LIST);
       setRecipesList(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -38,9 +36,7 @@ export default function RecipesList() {
 
   const confirmDeleteRecipe = async () => {
     try {
-      await axiosInstance.delete(RECIPES_URLS.DELETE_RECIPE(selectedRecipe.id), {
-        headers: { Authorization: localStorage.getItem("Token") },
-      });
+      await privateAxiosInstance.delete(RECIPES_URLS.DELETE_RECIPE(selectedRecipe.id));
       setRecipesList(recipesList.filter((recipe) => recipe.id !== selectedRecipe.id));
       setShowModal(false);
       toast.success("Recipe deleted successfully")

@@ -81,22 +81,69 @@
         left 50px top,  
         right bottom;  */
         background-color: #009247;
+/* background-image: 
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'), 
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'),
+    url('./assets/Imgs/Ellipse217.png'),
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png');
+
+background-position: 
+left -24px top 166px,   
+right 600px center,     
+right 8px top 5px, 
+left 55px top 20px,  
+left 60px bottom 20px,  
+left 260px top 30px,   
+right 37px bottom 10px;
+
+background-repeat: no-repeat; */
 background-image: 
     url('./assets/Imgs/Ellipse215.png'), 
     url('./assets/Imgs/Ellipse217.png'), 
     url('./assets/Imgs/Ellipse215.png'), 
     url('./assets/Imgs/Ellipse217.png'),
     url('./assets/Imgs/Ellipse217.png'),
-    url('./assets/Imgs/Ellipse217.png');
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'),
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'), 
+    url('./assets/Imgs/Ellipse215.png'), 
+    url('./assets/Imgs/Ellipse217.png'), 
+    url('./assets/Imgs/Ellipse215.png');
 
 background-position: 
-left -24px top 166px,    /* الدائرة في الأعلى يسار */
-right 394px center,     /* الدائرة في اليمين منتصف */
-right -11px bottom 40px, /* الدائرة في الأسفل يمين */
-left 60px bottom 20px,  /* الدائرة في الأسفل يسار */
-left 100px top 30px,   /* دائرة إضافية في الأعلى */
-right 37px bottom 10px;
+left -48px top 115px,  
+right 607px center,    
+right -1px top -46px, 
+left 99px top 0px,  
+left 270px bottom 73px,  
+left 396px top 60px,   
+right 33px bottom 10px,
+center top -74px,
+right 428px top 5px,
+left 183px bottom 100px,
+right 272px bottom 65px,
+right 406px bottom -29px;
+
+background-size: 
+    80px,   
+    120px,
+    90px,
+    100px,
+    110px,
+    95px,
+    85px,
+    130px,
+    150px,
+    100px,
+    120px,
+    140px;
+
 background-repeat: no-repeat;
+
 background-size: auto;
 
     

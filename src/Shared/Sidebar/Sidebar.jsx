@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 import Logout from '../../assets/Imgs/Logout.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { axiosInstance, USER_URLS } from '../../Services/Urls/Urls';
+import { axiosInstance, privateAxiosInstance, USER_URLS } from '../../Services/Urls/Urls';
 import Logo from '../../assets/Imgs/auth-logo.png'
 
 export default function SideBar() {
@@ -40,14 +40,9 @@ export default function SideBar() {
     setIsSubmitting(true);
 
     try {
-      let response = await axiosInstance.put(
+      let response = await privateAxiosInstance.put(
         USER_URLS.CHANGE_PASSWORD, 
         data, 
-        { 
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`
-          }
-        }
       );
       
       console.log(response);

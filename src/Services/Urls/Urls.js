@@ -2,13 +2,19 @@ import axios from "axios";
 
 export const baseUrl = "https://upskilling-egypt.com:3006/api/v1";
 
+// puplic instance
 export const axiosInstance = axios.create({
     baseURL: baseUrl,
-    headers: {
-        Authorization: localStorage.getItem("Token")
-      }
-    
 });
+
+// private instance
+export const privateAxiosInstance = axios.create({
+    baseURL: baseUrl,
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+    },
+});
+
 
 export const USER_URLS = {
     LOGIN: `/Users/Login`,
