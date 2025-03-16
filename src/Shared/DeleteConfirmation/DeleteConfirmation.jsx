@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import Delete from "../../assets/Imgs/delete.png";
+
 
 export default function DeleteConfirmation({ 
   show, 
