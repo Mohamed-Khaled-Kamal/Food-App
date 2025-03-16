@@ -43,7 +43,7 @@ export default function Dashbord() {
               <p>you can now fill the meals easily using the table and form , click here and sill it with the table !</p>
             </div>
             <div className='btn-dsh'>
-  <Link to="recpies-form" className="btn btn-success butn px-5">
+  <Link to="recpies/new-recpie" className="btn btn-success butn px-5">
     Fill Recipes <i className="fa-solid fa-arrow-right"></i>
   </Link>
 </div>

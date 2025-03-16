@@ -185,6 +185,11 @@ background-size: auto;
      border: none;
   }
 
-  .drag input{
-    border: dashed !important;
+  .drag {
+    border:2px dashed #009247 !important;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #F1FFF0;
   }
+
+  

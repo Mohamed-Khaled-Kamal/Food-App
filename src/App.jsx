@@ -51,7 +51,8 @@ function App() {
       children:[
         { index: true, element: <Dashbord /> },
         { path: 'recpies', element: <RecpiesList/> },
-        { path: 'recpies-data', element: <RecpiesData /> },
+        { path: 'recpies/new-recpie', element: <RecpiesData /> },
+        { path: 'recpies/:recpieId', element: <RecpiesData /> },
         { path: 'recpies-form', element: <RecpiesForm/> },
         { path: 'categories', element: <CategoriesList/> },
         { path: 'category', element: <CategoriesData/> },

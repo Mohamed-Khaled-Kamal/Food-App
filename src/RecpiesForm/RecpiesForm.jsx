@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Upload from '../assets/Imgs/Upload.png'
 
 export default function RecpiesForm() {
   
@@ -37,7 +38,8 @@ export default function RecpiesForm() {
   };
 
   return (
-    <>
+    <> 
+      Form Test
           <div>
           <div className='dashbord px-3'>
         <div className="container-fluid">
@@ -56,7 +58,7 @@ export default function RecpiesForm() {
         </div>
 
         <div className="mx-5 mt-5 px-5">
-  <form onSubmit={handleSubmit} className='recipe-form'>
+  <form onSubmit={handleSubmit} className='recipe-form py-3'>
     {/* Recipe Name */}
     <div className="mb-3">
       <input 
@@ -116,7 +118,7 @@ export default function RecpiesForm() {
     {/* Description */}
     <div className="mb-3">
       <textarea 
-        name="description" 
+        name="description " 
         className="form-control" 
         placeholder="Description" 
         value={formData.description} 
@@ -127,19 +129,23 @@ export default function RecpiesForm() {
 
     {/* Drag & Drop Image Upload */}
     <div 
-      className="mb-3 p-4 border border-dashed text-center drag"
-      style={{ border: "2px dashed #ccc", borderRadius: "10px", cursor: "pointer" }}
+      className="mb-5   text-center drag"
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
       onClick={() => document.getElementById("fileInput").click()}
-    >
-      <p>Drag & Drop an image or <span style={{ color: "blue", textDecoration: "underline" }}>Click to Upload</span></p>
+            >
+              <img src={Upload} alt="" />
+      <p>Drag & Drop or <span style={{color:'#009247'}}>Choose a Item Image</span> to Upload</p>
       <input type="file" id="fileInput" accept="image/*" onChange={handleImageUpload} hidden />
       {formData.image && <img src={URL.createObjectURL(formData.image)} alt="Preview" className="mt-2" style={{ width: "100px", height: "100px", borderRadius: "5px" }} />}
     </div>
 
     {/* Submit Button */}
-    <button type="submit" className="btn btn-primary w-100">Submit Recipe</button>
+    <div className="mt-5 d-flex justify-content-end">
+  <button type="button" className="btn btn-outline-success me-5 w-25 py-2">Cancel</button>
+  <button type="submit" className="btn btn-success px-4">Save</button>
+</div>
+
   </form>
 </div>
 

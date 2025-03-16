@@ -33,6 +33,7 @@ export const RECIPES_URLS = {
     DELETE_RECIPE: (id) => `/Recipe/${id}`,
     ADD_RECIPE: `/Recipe/`,
     GET_RECIPE: (id) => `/Recipe/${id}`,
+    EDIT_RECIPE: (id) => `/Recipe/${id}`,
 }
 
 export const CATEGORIES_URLS = {
@@ -40,4 +41,8 @@ export const CATEGORIES_URLS = {
     DELETE_CATEGORY: (id) => `/Category/${id}`,
     ADD_CATEGORY: `/Category/`,
     EDIT_CATEGORY: (id) => `/Category/${id}`,
+}
+
+export const TAGS_URLS = {
+    GET_TAGS: `/tag/`,
 }

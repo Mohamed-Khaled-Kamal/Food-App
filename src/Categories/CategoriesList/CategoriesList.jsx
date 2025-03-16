@@ -19,21 +19,36 @@ export default function CategoriesList() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const [arryOfPages, setArryOfPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(3); 
 
-  const GetAllCategories = async () => {
+
+
+  
+  const GetCategories = async (pageSize, pageNumber) => {
     try {
       setLoading(true);
-      let response = await privateAxiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST);
+      let response = await privateAxiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST, {
+        params: {
+          pageSize: pageSize,
+          pageNumber: pageNumber,
+        },
+      });
+  
       setCategoriesList(response?.data?.data);
+      setArryOfPages(Array(response?.data?.totalNumberOfPages).fill().map((_, index) => index + 1));
+      setCurrentPage(pageNumber); 
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
-    GetAllCategories();
+    GetCategories(3,1);
   }, []);
 
   const handleDeleteClick = (category) => {
@@ -103,7 +118,7 @@ export default function CategoriesList() {
             </div>
             <div className="add-btn">
             <button className="btn btn-success" onClick={() => {
-              setCategoryToEdit(null); 
+              setCategoryToEdit(null);
               setShowAddModal(true);
               }}>
   Add New Category
@@ -113,20 +128,20 @@ export default function CategoriesList() {
         </div>
       </div>
 
-      <AddCategoryModal 
-        show={showAddModal} 
-        handleClose={() => setShowAddModal(false)} 
-        handleAddCategory={handleAddCategory} 
+      <AddCategoryModal
+        show={showAddModal}
+        handleClose={() => setShowAddModal(false)}
+        handleAddCategory={handleAddCategory}
         handleEditCategory={handleEditCategory}
-        categoryToEdit={categoryToEdit} 
+        categoryToEdit={categoryToEdit}
       />
 
-      <DeleteConfirmation 
-        show={showDeleteModal} 
-        handleClose={() => setShowDeleteModal(false)} 
+      <DeleteConfirmation
+        show={showDeleteModal}
+        handleClose={() => setShowDeleteModal(false)}
         handleDeleteConfirm={handleDeleteConfirm}
-        title="Delete Category" 
-        message={`Are you sure you want to delete the category "${selectedCategory?.name}"?`} 
+        title="Delete Category"
+        message={`Are you sure you want to delete the category "${selectedCategory?.name}"?`}
         btnName="Delete Item"
         img={Delete}
       />
@@ -154,7 +169,10 @@ export default function CategoriesList() {
                 <tbody>
                   {categoriesList.map((category, index) => (
                     <tr key={category.id}>
-                      <th scope="row">{index + 1}</th>
+                      {/* <th scope="row">{index + 1}</th> */}
+                      <th scope="row">{(currentPage - 1) * pageSize + index + 1}</th>
+
+
                       <td>{category.id}</td>
                       <td>{category.name}</td>
                       <td>{category.creationDate}</td>
@@ -200,7 +218,68 @@ export default function CategoriesList() {
             )}
           </div>
         </div>
+       
+        
+        <nav aria-label="Page navigation example">
+  <ul className="pagination justify-content-center">
+    
+    <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+      <button className="page-link" onClick={() => GetCategories(3, currentPage - 1)}>Previous</button>
+    </li>
+
+    
+    {arryOfPages.length > 1 && (
+      <>
+        <li className={`page-item ${currentPage === 1 ? "active" : ""}`}>
+          <button className="page-link" onClick={() => GetCategories(3, 1)}>1</button>
+        </li>
+        {arryOfPages.length > 1 && (
+          <li className={`page-item ${currentPage === 2 ? "active" : ""}`}>
+            <button className="page-link" onClick={() => GetCategories(3, 2)}>2</button>
+          </li>
+        )}
+      </>
+    )}
+
+   
+    {currentPage > 5 && <li className="page-item disabled"><span className="page-link">...</span></li>}
+
+   
+    {arryOfPages.slice(
+      Math.max(2, currentPage - 2), 
+      Math.min(arryOfPages.length - 2, currentPage + 1)
+    ).map((page) => (
+      <li className={`page-item ${page === currentPage ? "active" : ""}`} key={page}>
+        <button className="page-link" onClick={() => GetCategories(3, page)}>{page}</button>
+      </li>
+    ))}
+
+    
+    {currentPage < arryOfPages.length - 4 && <li className="page-item disabled"><span className="page-link">...</span></li>}
+
+
+    {arryOfPages.length > 2 && (
+      <>
+        <li className={`page-item ${currentPage === arryOfPages.length - 1 ? "active" : ""}`}>
+          <button className="page-link" onClick={() => GetCategories(3, arryOfPages.length - 1)}>{arryOfPages.length - 1}</button>
+        </li>
+        <li className={`page-item ${currentPage === arryOfPages.length ? "active" : ""}`}>
+          <button className="page-link" onClick={() => GetCategories(3, arryOfPages.length)}>{arryOfPages.length}</button>
+        </li>
+      </>
+    )}
+
+    
+    <li className={`page-item ${currentPage === arryOfPages.length ? "disabled" : ""}`}>
+      <button className="page-link" onClick={() => GetCategories(3, currentPage + 1)}>Next</button>
+    </li>
+  </ul>
+</nav>
+
+
       </div>
     </>
   );
 }
+
+
