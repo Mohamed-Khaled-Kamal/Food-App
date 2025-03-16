@@ -23,7 +23,7 @@ export default function Navbar() {
     <div className='p-3'>
       <nav className="navbar navbar-expand-lg bg-body-tertiary border border-0 rounded-3">
         <div className="container-fluid">
-          {/* زر القائمة الجانبية للجوال */}
+          
           <button 
             className="navbar-toggler" 
             type="button" 
