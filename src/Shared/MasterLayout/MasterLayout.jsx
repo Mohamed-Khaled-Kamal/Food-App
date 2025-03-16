@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../Navbar/Navbar'
 import { Outlet } from 'react-router-dom'
-import SideBar from '../SideBar/SideBar'
+import SideBar from '../SideBar/SideBar.jsx'
 
 export default function MasterLayout() {
   return (
