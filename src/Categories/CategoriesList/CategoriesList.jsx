@@ -10,6 +10,8 @@ import AddCategoryModal from "../CategoriesData/CategoriesData";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import CategoriesData from "../CategoriesData/CategoriesData";
 import Delete from '../../assets/Imgs/Delete.png'
+import Pagination from "../../Shared/Pagination/Pagination";
+
 
 export default function CategoriesList() {
   const [categoriesList, setCategoriesList] = useState([]);
@@ -22,17 +24,19 @@ export default function CategoriesList() {
   const [arryOfPages, setArryOfPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(3); 
+  const [name, setName] = useState('')
 
 
 
   
-  const GetCategories = async (pageSize, pageNumber) => {
+  const GetCategories = async (pageSize, pageNumber,name) => {
     try {
       setLoading(true);
       let response = await privateAxiosInstance.get(CATEGORIES_URLS.CATEGORIES_LIST, {
         params: {
           pageSize: pageSize,
           pageNumber: pageNumber,
+          name: name,
         },
       });
   
@@ -98,6 +102,13 @@ export default function CategoriesList() {
     }
   };
 
+  const getNameValue = (e) => {
+    console.log(e.target.value)
+    setName(e.target.value)
+    // GetRecipes(1,e.target.value,tagValue,catValue)
+    GetCategories(3,1,e.target.value)
+}
+
 
   return (
     <>
@@ -146,6 +157,12 @@ export default function CategoriesList() {
         img={Delete}
       />
 
+<div className="d-flex align-items-center gap-3 p-3 bg-light rounded">
+  {/*  Search Bar */}
+  <input type="text" className="form-control" placeholder="Search..." onChange={getNameValue} />
+
+</div>
+      
       <div className="categ-table">
         <div className="table-content px-3">
           <div className="container-fluid">
@@ -274,7 +291,14 @@ export default function CategoriesList() {
       <button className="page-link" onClick={() => GetCategories(3, currentPage + 1)}>Next</button>
     </li>
   </ul>
-</nav>
+        </nav>
+
+{/* <Pagination
+  currentPage={currentPage}
+  totalPages={arryOfPages.length}
+  onPageChange={(page) => GetCategories(pageSize, page)}
+/> */}
+
 
 
       </div>

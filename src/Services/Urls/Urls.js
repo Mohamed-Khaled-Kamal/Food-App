@@ -22,6 +22,7 @@ export const USER_URLS = {
     FORGET_PASSWORD: `/Users/Reset/Request`,
     RESET_PASSWORD: `/Users/Reset`,
     CHANGE_PASSWORD: `/Users/ChangePassword`,
+    VERIFY_ACCOUNT: `/Users/verify`,
     GET_USER: (id) => `/users/${id}`,
     USERS_LIST: `/Users/`,
     DELETE_USER: (id) => `/Users/${id}`,

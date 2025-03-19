@@ -321,6 +321,7 @@ const getTagValue = (e) => {
   </ul>
 </nav>
 
+      
 
       <DeleteConfirmation show={showModal} handleClose={() => setShowModal(false)} handleDeleteConfirm={confirmDeleteRecipe} img={Delete} btnName='Delete this Item' />
     </>
