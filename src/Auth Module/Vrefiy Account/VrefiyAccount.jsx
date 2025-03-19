@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../Services/Urls/Urls"; 
-import logo from "../../Assets/Imgs/auth-logo.png";
+// import logo from "../../Assets/Imgs/auth-logo.png";
+import authLogo from "/src/Assets/Imgs/auth-logo.png";
+
 import { USER_URLS } from "../../Services/Urls/Urls"; 
 
 export default function VerifyAccount() {
@@ -42,7 +44,7 @@ export default function VerifyAccount() {
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-5 bg-white rounded-3 p-5">
             <div className="logo-container text-center mb-2">
-              <img className="w-50" src={logo} alt="Logo" />
+              <img className="w-50" src={authLogo} alt="Logo" />
             </div>
 
             <div className="title-auth">
