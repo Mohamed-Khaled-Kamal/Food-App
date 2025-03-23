@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
 import AuthLayout from './Shared/AuthLayout/AuthLayout'
 import Login from './Auth Module/Login/Login'
 import Register from './Auth Module/Register/Register'
@@ -40,7 +40,7 @@ function App() {
 //   saveLoginData();
 // }, []);
   
-  const Routes = createBrowserRouter([
+  const Routes = createHashRouter([
     {
       path: '/',
       element: <AuthLayout />,
@@ -106,7 +106,7 @@ function App() {
             </UserProtectedRoute>)
         },
         
-        // { path: 'change-password', element: <ChangePass/> }
+        
       ]
     }
   ])
