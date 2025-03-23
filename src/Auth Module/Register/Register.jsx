@@ -223,7 +223,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import logo from '../../assets/Imgs/authlogo.png';
+import logo from '../../assets/Imgs/logo.png';
 import { axiosInstance, USER_URLS } from '../../Services/Urls/Urls';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../Services/Urls/Validations';
 

@@ -8,7 +8,7 @@ import Logout from '../../assets/Imgs/Logout.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { axiosInstance, privateAxiosInstance, USER_URLS } from '../../Services/Urls/Urls';
-import Logo from '../../assets/Imgs/authlogo.png'
+import Logo from '../../assets/Imgs/logo.png'
 import { jwtDecode } from 'jwt-decode';
 
 
