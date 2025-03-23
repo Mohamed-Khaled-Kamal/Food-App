@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../Services/Urls/Urls"; 
-import logo from "/src/Assets/Imgs/logo.png";
+import logo from "../../assets/Imgs/logo.png";
 
 import { USER_URLS } from "../../Services/Urls/Urls"; 
 
