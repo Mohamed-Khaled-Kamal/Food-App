@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react';
-import logo from '../../assets/Imgs/auth-logo.png';
+import logo from '../../assets/Imgs/authlogo.png';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';

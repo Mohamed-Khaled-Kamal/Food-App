@@ -1,10 +1,4 @@
-import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import viteLogo from "/vite.svg";
-// import viteLogo from "./assets/vite.svg";
-
-
+import { useEffect, useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AuthLayout from './Shared/AuthLayout/AuthLayout'
@@ -25,9 +19,26 @@ import UsersList from './Users/UsersList/UsersList'
 import { ToastContainer } from 'react-toastify'
 import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute'
 import RecpiesForm from './RecpiesForm/RecpiesForm'
+import { jwtDecode } from 'jwt-decode'
+import Favorites from './Favorites/Favorites'
+import AdminProtectedRoute from './Shared/AdminProtectedRoute/AdminProtectedRoute'
+import UserProtectedRoute from './Shared/UserProtectedRoute/UserProtectedRoute'
+// import Profile from './Profile/Profile'
+
 
 
 function App() {
+
+// const [loginData,setLoginData]=useState(null)
+// let saveLoginData=()=>{
+//   let decodedToken=localStorage.getItem('Token')
+//   let encodedToken=jwtDecode(decodedToken)
+//   setLoginData(encodedToken)
+// }
+
+// useEffect(() => {
+//   saveLoginData();
+// }, []);
   
   const Routes = createBrowserRouter([
     {
@@ -45,18 +56,56 @@ function App() {
     },
     {
       path: '/dashbord',
-      element:<ProtectedRoute><MasterLayout /></ProtectedRoute>  ,
+      element: <ProtectedRoute><MasterLayout  /></ProtectedRoute>  ,
         
       errorElement:<NotFound/>,
       children:[
-        { index: true, element: <Dashbord /> },
+        { index: true, element: <Dashbord  /> },
         { path: 'recpies', element: <RecpiesList/> },
-        { path: 'recpies/new-recpie', element: <RecpiesData /> },
-        { path: 'recpies/:recpieId', element: <RecpiesData /> },
-        { path: 'recpies-form', element: <RecpiesForm/> },
-        { path: 'categories', element: <CategoriesList/> },
-        { path: 'category', element: <CategoriesData/> },
-        { path: 'Users', element: <UsersList /> },
+        {
+          path: 'recpies/new-recpie', element: (
+            <AdminProtectedRoute>
+              {""}
+            <RecpiesData />
+            </AdminProtectedRoute>)
+        },
+        {
+          path: 'recpies/:recpieId', element: (
+            <AdminProtectedRoute>
+              {""}
+            <RecpiesData />
+            </AdminProtectedRoute>)
+        },
+        { path: 'recpies-form', element: <RecpiesForm /> },
+        {
+          path: 'categories', element: (
+            <AdminProtectedRoute>
+              {""}
+              <CategoriesList />
+              </AdminProtectedRoute>)
+        },
+        {
+          path: 'category', element: (
+            <AdminProtectedRoute>
+              {""}
+            <CategoriesData />
+            </AdminProtectedRoute>)
+        },
+        {
+          path: 'Users', element: (
+            <AdminProtectedRoute>
+              {""}
+            <UsersList />
+            </AdminProtectedRoute>)
+        },
+        {
+          path: 'favourites', element: (
+            <UserProtectedRoute>
+              {""}
+            <Favorites />
+            </UserProtectedRoute>)
+        },
+        
         // { path: 'change-password', element: <ChangePass/> }
       ]
     }
@@ -71,3 +120,5 @@ function App() {
 }
 
 export default App
+
+

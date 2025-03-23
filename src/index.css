@@ -159,7 +159,7 @@ background-size: auto;
 
 
   .title{
-    width: 37%;
+    /* width: 37%; */
   }
 
   /*---------------------Table css---------------------------*/
@@ -168,6 +168,34 @@ background-size: auto;
     background-color: #E2E5EB;
   }
 
+  .table thead{
+    border-radius: 20px;
+  }
+
+  .table thead th{
+    padding: 32px 40px;
+    background-color: rgba(226, 229, 235, 1);
+    
+}
+
+.table tbody th{
+  padding: 25px 40px;
+  align-items: center;
+}
+
+.table tbody td{
+  padding: 25px 40px;
+  align-items: center;
+}
+
+.table thead th:first-child {
+  border-radius: 15px 0 0 15px;
+}
+
+.table thead th:last-child {
+  border-radius: 0 15px 15px 0;
+}
+
   /*-----------------------dashbord------------------------*/
 
   .dsh{
@@ -175,7 +203,7 @@ background-size: auto;
   }
   
   .dsh-title{
-    width: 40%;
+    /* width: 40%; */
   }
 
   /*------------recipe-form--------------------*/

@@ -11,6 +11,7 @@ import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmati
 import CategoriesData from "../CategoriesData/CategoriesData";
 import Delete from '../../assets/Imgs/Delete.png'
 import Pagination from "../../Shared/Pagination/Pagination";
+import Preloader from "../../Shared/Preloader/Preloader";
 
 
 export default function CategoriesList() {
@@ -122,12 +123,13 @@ export default function CategoriesList() {
 
       <div className="add-categ px-3">
         <div className="container-fluid">
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="detail my-auto">
+          <div className="row align-items-center">
+          <div className="detail col-12 col-md-6 text-md-start text-center my-auto">
               <h2>Categories Table Details</h2>
               <p>You can check all details</p>
             </div>
-            <div className="add-btn">
+
+            <div className="add-btn col-12 col-md-6 text-md-end text-center mt-3 mt-md-0">
             <button className="btn btn-success" onClick={() => {
               setCategoryToEdit(null);
               setShowAddModal(true);
@@ -135,6 +137,7 @@ export default function CategoriesList() {
   Add New Category
 </button>
             </div>
+
           </div>
         </div>
       </div>
@@ -164,77 +167,104 @@ export default function CategoriesList() {
 </div>
       
       <div className="categ-table">
+  
         <div className="table-content px-3">
-          <div className="container-fluid">
-            {loading ? (
-              <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Loading...</span>
+    <div className="container-fluid">
+
+      {/* ❌ جدول (يظهر فقط على الشاشات الكبيرة) */}
+      <div className="d-none d-md-block">
+        {loading ? (
+        <Preloader/>
+        ) : categoriesList.length > 0 ? (
+          <table className="table text-center">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Create Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categoriesList.map((category, index) => (
+                <tr key={category.id}>
+                  <th scope="row">{(currentPage - 1) * pageSize + index + 1}</th>
+                  <td>{category.id}</td>
+                  <td>{category.name}</td>
+                  <td>{category.creationDate}</td>
+                  <td className="position-relative">
+                    <i
+                      className="fas fa-ellipsis-h"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setDropdownOpen(dropdownOpen === category.id ? null : category.id)}
+                    ></i>
+
+                    {dropdownOpen === category.id && (
+                      <div className="dropdown-menu show position-absolute" style={{ right: 0 }}>
+                        <button className="dropdown-item d-flex align-items-center">
+                          <i className="far fa-eye me-2"></i> View
+                        </button>
+                        <button className="dropdown-item d-flex align-items-center" onClick={() => handleEditClick(category)}>
+                          <i className="fas fa-edit me-2"></i> Edit
+                        </button>
+                        <button className="dropdown-item d-flex align-items-center" onClick={() => handleDeleteClick(category)}>
+                          <i className="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
+            <img src={NoData} alt="No Data" />
+          </div>
+        )}
+      </div>
+
+      {/* ✅ كروت (تظهر فقط على الموبايل) */}
+      <div className="d-block d-md-none">
+        {loading ? (
+        <Preloader/>
+        ) : categoriesList.length > 0 ? (
+          <div className="row">
+            {categoriesList.map((category) => (
+              <div className="col-12 mb-3" key={category.id}>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{category.name}</h5>
+                    <p className="card-text">
+                      <strong>ID:</strong> {category.id} <br />
+                      <strong>Created on:</strong> {category.creationDate}
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      <button className="btn btn-outline-success btn-sm">
+                        <i className="far fa-eye me-1"></i> View
+                      </button>
+                      <button className="btn btn-outline-success btn-sm" onClick={() => handleEditClick(category)}>
+                        <i className="fas fa-edit me-1"></i> Edit
+                      </button>
+                      <button className="btn btn-outline-success btn-sm" onClick={() => handleDeleteClick(category)}>
+                        <i className="fas fa-trash-alt me-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ) : categoriesList.length > 0 ? (
-              <table className="table text-center">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Create Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categoriesList.map((category, index) => (
-                    <tr key={category.id}>
-                      {/* <th scope="row">{index + 1}</th> */}
-                      <th scope="row">{(currentPage - 1) * pageSize + index + 1}</th>
-
-
-                      <td>{category.id}</td>
-                      <td>{category.name}</td>
-                      <td>{category.creationDate}</td>
-                      
-                      <td className="position-relative">
-  <i
-    className="fas fa-ellipsis-h"
-    style={{ cursor: "pointer" }}
-    onClick={() => setDropdownOpen(dropdownOpen === category.id ? null : category.id)}
-  ></i>
-
-  {dropdownOpen === category.id && (
-    <div className="dropdown-menu show position-absolute" style={{ right: 0 }}>
-      <button className="dropdown-item d-flex align-items-center">
-        <i className="far fa-eye me-2"></i> View
-      </button>
-
-      <button
-        className="dropdown-item d-flex align-items-center"
-        onClick={() => handleEditClick(category)}
-      >
-        <i className="fas fa-edit me-2"></i> Edit
-      </button>
-
-      <button
-        className="dropdown-item d-flex align-items-center"
-        onClick={() => handleDeleteClick(category)}
-      >
-        <i className="fas fa-trash-alt me-2"></i> Delete
-      </button>
-    </div>
-  )}
-</td>
-
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
-                <img src={NoData} alt="No Data" />
-              </div>
-            )}
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
+            <img src={NoData} alt="No Data" />
+          </div>
+        )}
+      </div>
+      
+    </div>
+  </div>
        
         
         <nav aria-label="Page navigation example">
@@ -293,11 +323,7 @@ export default function CategoriesList() {
   </ul>
         </nav>
 
-{/* <Pagination
-  currentPage={currentPage}
-  totalPages={arryOfPages.length}
-  onPageChange={(page) => GetCategories(pageSize, page)}
-/> */}
+
 
 
 

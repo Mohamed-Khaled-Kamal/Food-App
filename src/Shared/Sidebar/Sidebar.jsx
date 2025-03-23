@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import sidelogo from '../../assets/Imgs/Sidebar-logo.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +8,8 @@ import Logout from '../../assets/Imgs/Logout.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { axiosInstance, privateAxiosInstance, USER_URLS } from '../../Services/Urls/Urls';
-import Logo from '../../assets/Imgs/auth-logo.png'
+import Logo from '../../assets/Imgs/authlogo.png'
+import { jwtDecode } from 'jwt-decode';
 
 export default function SideBar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +22,7 @@ export default function SideBar() {
   const [showOldPass, setShowOldPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [userGroup, setUserGroup] = useState(null);
 
   const password = watch("newPassword");
   const confirmPassword = watch("confirmNewPassword");
@@ -41,8 +43,8 @@ export default function SideBar() {
 
     try {
       let response = await privateAxiosInstance.put(
-        USER_URLS.CHANGE_PASSWORD, 
-        data, 
+        USER_URLS.CHANGE_PASSWORD,
+        data,
       );
       
       console.log(response);
@@ -56,6 +58,18 @@ export default function SideBar() {
     setIsSubmitting(false);
 };
 
+useEffect(() => {
+  const token = localStorage.getItem("Token");
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      setUserGroup(decodedToken?.userGroup);
+      console.log(`System Group :${decodedToken?.userGroup}`)
+    } catch (error) {
+      console.error("Invalid token", error);
+    }
+  }
+}, []);
 
   return (
     <>
@@ -69,15 +83,21 @@ export default function SideBar() {
             <MenuItem icon={<i className="fas fa-home"></i>} component={<Link to={"/dashbord"} />}>
               Home
             </MenuItem>
-            <MenuItem icon={<i className="fas fa-users"></i>} component={<Link to={"/dashbord/Users"} />}>
+            {userGroup != "SystemUser" ?<MenuItem icon={<i className="fas fa-users"></i>} component={<Link to={"/dashbord/Users"} />}>
               Users
-            </MenuItem>
+            </MenuItem> : ''}
+            
             <MenuItem icon={<i className="fas fa-th-large"></i>} component={<Link to={"/dashbord/recpies"} />}>
               Recipes
             </MenuItem>
-            <MenuItem icon={<i className="fas fa-calendar-alt"></i>} component={<Link to={"/dashbord/categories"} />}>
+            {userGroup != "SystemUser" ? <MenuItem icon={<i className="fas fa-calendar-alt"></i>} component={<Link to={"/dashbord/categories"} />}>
               Categories
-            </MenuItem>
+            </MenuItem> : ''}
+            
+            {userGroup == "SystemUser" ? <MenuItem icon={<i className="far fa-heart"></i>} component={<Link to={"/dashbord/favourites"} />}>
+              Favorites
+            </MenuItem>:''}
+            
             <MenuItem icon={<i className="fas fa-unlock-alt"></i>} onClick={() => setShowChangePasswordModal(true)}>
               Change Password
             </MenuItem>
@@ -129,13 +149,13 @@ export default function SideBar() {
             <span className="input-group-text bg-white">
               <i className="fas fa-lock"></i>
             </span>
-            <input 
-              {...register("oldPassword", { required: 'Old password is required' })} 
-              type={showOldPass ? "text" : "password"} 
-              className="form-control border-end-0" 
-              placeholder="Enter old password" 
+            <input
+              {...register("oldPassword", { required: 'Old password is required' })}
+              type={showOldPass ? "text" : "password"}
+              className="form-control border-end-0"
+              placeholder="Enter old password"
             />
-            <button 
+            <button
               type="button"
               className="btn btn-outline-secondary border-start-0 border-secondary-subtle"
               onClick={() => setShowOldPass(!showOldPass)}
@@ -150,16 +170,16 @@ export default function SideBar() {
             <span className="input-group-text bg-white">
               <i className="fas fa-lock"></i>
             </span>
-            <input 
+            <input
               {...register("newPassword", {
                 required: 'New password is required',
                 minLength: { value: 8, message: "Must be at least 8 characters" }
-              })} 
-              type={showNewPass ? "text" : "password"} 
-              className="form-control border-end-0" 
-              placeholder="Enter new password" 
+              })}
+              type={showNewPass ? "text" : "password"}
+              className="form-control border-end-0"
+              placeholder="Enter new password"
             />
-            <button 
+            <button
               type="button"
               className="btn btn-outline-secondary border-start-0 border-secondary-subtle"
               onClick={() => setShowNewPass(!showNewPass)}
@@ -174,16 +194,16 @@ export default function SideBar() {
             <span className="input-group-text bg-white">
               <i className="fas fa-lock"></i>
             </span>
-            <input 
+            <input
               {...register("confirmNewPassword", {
                 required: 'Confirm new password is required',
                 validate: (value) => value === password || "Passwords do not match"
-              })} 
-              type={showConfirmPass ? "text" : "password"} 
-              className="form-control border-end-0" 
-              placeholder="Confirm new password" 
+              })}
+              type={showConfirmPass ? "text" : "password"}
+              className="form-control border-end-0"
+              placeholder="Confirm new password"
             />
-            <button 
+            <button
               type="button"
               className="btn btn-outline-secondary border-start-0 border-secondary-subtle"
               onClick={() => setShowConfirmPass(!showConfirmPass)}
@@ -207,3 +227,4 @@ export default function SideBar() {
     </>
   );
 }
+

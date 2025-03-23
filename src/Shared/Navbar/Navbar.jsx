@@ -3,15 +3,16 @@ import { jwtDecode } from 'jwt-decode';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import UserImg from '../../assets/Imgs/UserImg.png'
 
-export default function Navbar() {
+export default function Navbar({loginData}) {
   const [username, setUsername] = useState('');
 
+  
   useEffect(() => {
     const token = localStorage.getItem('Token');
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        setUsername(decodedToken.userEmail || 'User'); 
+        setUsername(decodedToken.userEmail || 'User');
         console.log(decodedToken);
       } catch (error) {
         console.error('Invalid token', error);
@@ -24,13 +25,13 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary border border-0 rounded-3">
         <div className="container-fluid">
           
-          <button 
-            className="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarNav" 
-            aria-controls="navbarNav" 
-            aria-expanded="false" 
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
@@ -39,23 +40,23 @@ export default function Navbar() {
          
           <div className="collapse navbar-collapse" id="navbarNav">
             <div className="input-group me-auto bg-white  rounded-3" style={{ maxWidth: '500px' }}>
-              <span className="input-group-text" style={{ 
-                border: 'none', 
+              <span className="input-group-text" style={{
+                border: 'none',
                 background: 'transparent',
                 paddingRight: '10px'
               }}>
                 <i className="bi bi-search"></i>
               </span>
-              <input 
-                className="form-control border-0 shadow-none bg-white" 
-                type="search" 
-                placeholder="Search Here" 
-                aria-label="Search" 
-                style={{ 
-                  boxShadow: 'none', 
+              <input
+                className="form-control border-0 shadow-none bg-white"
+                type="search"
+                placeholder="Search Here"
+                aria-label="Search"
+                style={{
+                  boxShadow: 'none',
                   borderLeft: 'none',
                   borderRadius: '0'
-                }} 
+                }}
               />
             </div>
 
@@ -86,3 +87,6 @@ export default function Navbar() {
     </div>
   );
 }
+
+
+/**/////////////////////////////// */

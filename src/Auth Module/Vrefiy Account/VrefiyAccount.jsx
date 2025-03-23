@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../Services/Urls/Urls"; 
 // import logo from "../../Assets/Imgs/auth-logo.png";
-import authLogo from "/src/Assets/Imgs/auth-logo.png";
+import authLogo from "/src/Assets/Imgs/authlogo.png";
 
 import { USER_URLS } from "../../Services/Urls/Urls"; 
 

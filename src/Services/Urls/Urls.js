@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const baseUrl = "https://upskilling-egypt.com:3006/api/v1";
+export const ImgUrl = "https://upskilling-egypt.com:3006/";
 
 // puplic instance
 export const axiosInstance = axios.create({
@@ -35,6 +36,12 @@ export const RECIPES_URLS = {
     ADD_RECIPE: `/Recipe/`,
     GET_RECIPE: (id) => `/Recipe/${id}`,
     EDIT_RECIPE: (id) => `/Recipe/${id}`,
+}
+
+export const FAVS_URLS = {
+    GET_FAVS: `/userRecipe/`,
+    CREATE_FAVS: `/userRecipe/`,
+    DELETE_FAVS: (id) => `/userRecipe/${id}`,
 }
 
 export const CATEGORIES_URLS = {

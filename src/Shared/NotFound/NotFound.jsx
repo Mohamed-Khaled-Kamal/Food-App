@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './NotFound.css'
-import Logo from '../../assets/Imgs/auth-logo.png'
+import Logo from '../../assets/Imgs/authlogo.png'
 import error from '../../assets/Imgs/Notfound.png'
 
 export default function NotFound() {

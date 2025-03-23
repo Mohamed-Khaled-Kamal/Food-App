@@ -3,14 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Shared/Header/Header';
 import headimg from '../../assets/Imgs/recipes-head.png';
-import NoData from '../../assets/Imgs/No-data.png';
+// import NoData from '../../assets/Imgs/No-data.png';
 import Delete from '../../assets/Imgs/Delete-recipe.png';
 import NoImg from '../../assets/Imgs/noImg.png';
 import { Badge, Button, Dropdown, Modal, Form } from 'react-bootstrap';
-import { axiosInstance, CATEGORIES_URLS, privateAxiosInstance, RECIPES_URLS, TAGS_URLS } from '../../Services/Urls/Urls';
+import { axiosInstance, CATEGORIES_URLS, FAVS_URLS, ImgUrl, privateAxiosInstance, RECIPES_URLS, TAGS_URLS } from '../../Services/Urls/Urls';
 import { toast } from 'react-toastify';
 import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation';
 import { Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import NoData from '../../Shared/NoData/NoData';
+import Preloader from '../../Shared/Preloader/Preloader';
 
 export default function RecipesList() {
   const [recipesList, setRecipesList] = useState([]);
@@ -26,6 +29,7 @@ export default function RecipesList() {
   const [name, setName] = useState('')
   const [tagValue, setTagValue] = useState('')
   const [catValue, setCatValue] = useState('')
+  const [userGroup, setUserGroup] = useState(null);
 
   
 
@@ -128,12 +132,35 @@ const getTagValue = (e) => {
     GetRecipes(1, name, tagValue, e.target.value);
   };
   
+  const addToFavourite = async (id) => {
+    try {
+      
+      let response = await privateAxiosInstance.post(FAVS_URLS.CREATE_FAVS,{'recipeId':id});
+  
+      
+      console.log(response)
+      toast.success("Added to Favourite");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to add to favourite");
+    } 
+  }
   
   
   useEffect(() => {
     GetRecipes();
     GetCategories();
     GetTags();
+    const token = localStorage.getItem("Token");
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          setUserGroup(decodedToken?.userGroup); 
+          console.log(`System Group :${decodedToken?.userGroup}`)
+        } catch (error) {
+          console.error("Invalid token", error);
+        }
+      }
       
   }, []);
 
@@ -149,25 +176,37 @@ const getTagValue = (e) => {
 
       <div className='add-categ px-3'>
         <div className='container-fluid'>
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="detail my-auto">
-              <h2>Recipes Table Details</h2>
-              <p>You can check all details</p>
-            </div>
-            <div className="add-btn">
-              <Link to="/dashbord/recpies/new-recpie" className='btn btn-success'>Add New Recipe</Link>
-            </div>
-          </div>
+
+          <div className="row align-items-center">
+  
+  <div className="col-12 col-md-6 text-md-start text-center my-auto">
+    <h2>Recipes Table Details</h2>
+    <p>You can check all details</p>
+  </div>
+
+  
+  {userGroup !== "SystemUser" && (
+    <div className="col-12 col-md-6 text-md-end text-center mt-3 mt-md-0">
+      <Link to="/dashbord/recpies/new-recpie" className="btn btn-success">
+        Add New Recipe
+      </Link>
+    </div>
+  )}
+</div>
+
         </div>
       </div>
 
       <div>
        
-          <div className="d-flex align-items-center gap-3 p-3 bg-light rounded">
-  {/*  Search Bar */}
+          <div className="row d-flex align-items-center  p-3 bg-light rounded">
+          {/*  Search Bar */}
+          <div className="col-md-4 my-2">
   <input type="text" className="form-control" placeholder="Search..." onChange={getNameValue} />
+          </div>
 
-  {/* Tag List*/}
+          {/* Tag List*/}
+          <div className="col-md-4 my-2">
   <select className="form-select" onChange={getTagValue}>
     <option value="">Tags</option>
             {tags?.map(({id,name}) => (
@@ -176,8 +215,10 @@ const getTagValue = (e) => {
               </option>
             ))}
   </select>
+          </div>
 
-  {/* Categories List */}
+          {/* Categories List */}
+          <div className="col-md-4 my-2">
   <select className="form-select" onChange={getCatValue}>
     <option value="">Category</option>
     {categories?.map(({id,name}) => (
@@ -186,18 +227,15 @@ const getTagValue = (e) => {
       </option>
     ))}
   </select>
+          </div>
 </div>
 
 </div>
 
       <div className="table-content px-3">
-        <div className="container-fluid">
+        <div className="container-fluid d-none d-md-block">
           {loading ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '70vh' }}>
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
+          <Preloader/>
           ) : recipesList.length > 0 ? (
             <table className="table text-center table table-striped table-hover">
               <thead>
@@ -222,7 +260,7 @@ const getTagValue = (e) => {
                     <td className='w-25'>
                       <img 
                         className='w-50' 
-                        src={recipe.imagePath ? `https://upskilling-egypt.com:3006/${recipe.imagePath}` : NoImg} 
+                        src={recipe.imagePath ? `${ImgUrl}${recipe.imagePath}` : NoImg} 
                         alt="Recipe Image" 
                       />
                     </td>
@@ -237,33 +275,92 @@ const getTagValue = (e) => {
                           style={{ fontSize: '1.3rem', cursor: 'pointer' }}
                         ></i>
 
-                        {dropdownOpen === recipe.id && (
-                          <div className="dropdown-menu show position-absolute bg-light shadow rounded p-2" style={{ right: 0, top: '1.5rem' }}>
-                            <button className="dropdown-item d-flex align-items-center">
-                              <i className="far fa-eye me-2"></i> View
-                            </button>
-                            <Link to={`${recipe.id}`} className="dropdown-item d-flex align-items-center">
-                              <i className="fas fa-edit me-2"></i> Edit
-                            </Link>
-                            <button
-                              className="dropdown-item d-flex align-items-center"
-                              onClick={() => handleDeleteClick(recipe)}
-                            >
-                              <i className="fas fa-trash-alt me-2"></i> Delete
-                            </button>
-                          </div>
-                        )}
+                      {dropdownOpen === recipe.id && (
+  <div className="dropdown-menu show position-absolute bg-light shadow rounded p-2" style={{ right: 0, top: '1.5rem' }}>
+    <button className="dropdown-item d-flex align-items-center">
+      <i className="far fa-eye me-2"></i> View
+    </button>
+
+    {userGroup !== "SystemUser" ? (
+      <>
+        <Link to={`${recipe.id}`} className="dropdown-item d-flex align-items-center">
+          <i className="fas fa-edit me-2"></i> Edit
+        </Link>
+        <button
+          className="dropdown-item d-flex align-items-center"
+          onClick={() => handleDeleteClick(recipe)}
+        >
+          <i className="fas fa-trash-alt me-2"></i> Delete
+        </button>
+      </>
+    ) : (
+        <button
+        className="dropdown-item d-flex align-items-center"
+        onClick={()=> addToFavourite(recipe.id)}
+        >
+        <i className="far fa-heart me-2"></i> Favorites
+      </button>
+    )}
+  </div>
+)}
+
                       </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '70vh' }}>
-              <img src={NoData} alt="No Data" />
-            </div>
+                <NoData/>
           )}
         </div>
+        
+        <div className="d-md-none">
+                {recipesList.length > 0 ? (
+                  <div className="row">
+                    {recipesList.map((recipe) => (
+                      <div key={recipe.id} className="col-12 mb-3">
+                        <div className="card">
+                          <img className="card-img-top" src={recipe.imagePath ? `${ImgUrl}${recipe.imagePath}` : NoImg} alt="Recipe" />
+                          <div className="card-body">
+                            <h5 className="card-title">{recipe.name}</h5>
+                            <p className="card-text">{recipe.description}</p>
+                            <p className="card-text"><strong>Price:</strong> {recipe.price} $</p>
+                            <p className="card-text"><strong>Tag:</strong> {recipe.tag.name}</p>
+                            <p className="card-text"><strong>Category:</strong> {recipe.category?.[0]?.name || "No Category"}</p>
+                          </div>
+                          <div className="d-flex justify-content-between mt-3 p-2">
+                {/* زر العرض */}
+                <button className="btn btn-outline-success">
+                  <i className="far fa-eye me-1"></i> View
+                </button>
+
+                {userGroup !== "SystemUser" ? (
+                  <>
+                    {/* زر التعديل */}
+                    <Link to={`${recipe.id}`} className="btn btn-outline-success">
+                      <i className="fas fa-edit me-1"></i> Edit
+                    </Link>
+
+                    {/* زر الحذف */}
+                    <button className="btn btn-outline-success" onClick={() => handleDeleteClick(recipe)}>
+                      <i className="fas fa-trash-alt me-1"></i> Delete
+                    </button>
+                  </>
+                ) : (
+                  /* زر الإضافة إلى المفضلة */
+                  <button className="btn btn-outline-success" onClick={() => addToFavourite(recipe.id)}>
+                    <i className="far fa-heart me-1"></i> Favorites
+                  </button>
+                )}
+              </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <NoData/>
+                )}
+              </div>
       </div>
 
 <nav aria-label="Page navigation">
