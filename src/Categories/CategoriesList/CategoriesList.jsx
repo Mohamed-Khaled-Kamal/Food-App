@@ -224,9 +224,7 @@ export default function CategoriesList() {
             </tbody>
           </table>
         ) : (
-          <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
-            <img src={NoData} alt="No Data" />
-          </div>
+          <NoData/>
         )}
       </div>
 
