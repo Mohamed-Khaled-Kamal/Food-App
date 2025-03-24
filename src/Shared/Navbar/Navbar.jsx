@@ -64,11 +64,12 @@ export default function Navbar({loginData}) {
             <ul className="navbar-nav">
               
               <li className="nav-item d-flex align-items-center">
-  <img
+  {/* <img
     src={UserImg}
     alt="User Avatar"
     className="me-2"
-  />
+  /> */}
+                <i className="far fa-user-circle"></i>
   <a className="nav-link active" aria-current="page" href="#">
     {username ? `${username}` : 'Loading...'}
   </a>

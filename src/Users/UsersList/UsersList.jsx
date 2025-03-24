@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Shared/Header/Header";
 import headimg from "../../assets/Imgs/recipes-head.png";
-import NoData from "../../assets/Imgs/No-data.png";
+import NoData from "../../Shared/NoData/NoData";
 import { privateAxiosInstance, USER_URLS } from "../../Services/Urls/Urls";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import Delete from "../../assets/Imgs/delete user.png";
 import { toast } from "react-toastify";
 import Preloader from "../../Shared/Preloader/Preloader";
+import { Modal } from "react-bootstrap";
 
 export default function UsersList() {
   const [usersList, setUsersList] = useState([]);
@@ -18,16 +19,22 @@ export default function UsersList() {
   const [totalPages, setTotalPages] = useState(1);
   const [groupValue, setGroupValue] = useState("");
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [show, setShow] = useState(false);
   const pageSize = 5;
 
-  const GetAllUsers = async (page, groups, name) => {
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const GetAllUsers = async (page, groups, name, email) => {
     try {
       setLoading(true);
       let response = await privateAxiosInstance.get(USER_URLS.USERS_LIST, {
-        params: { pageSize, pageNumber: page, groups: groups, name: name }
+        params: { pageSize, pageNumber: page, groups: groups, userName: name ,email: email }
       });
       setUsersList(response.data.data);
-      console.log(response.data.data)
+      console.log(response.data)
       setTotalPages(response.data.totalNumberOfPages);
     } catch (error) {
       console.log(error);
@@ -37,8 +44,8 @@ export default function UsersList() {
   };
 
   useEffect(() => {
-    GetAllUsers(currentPage, groupValue, name);
-  }, [currentPage, groupValue, name]);
+    GetAllUsers(currentPage, groupValue, name, email);
+  }, [currentPage, groupValue, name, email]);
 
   const handleDeleteClick = (user) => {
     setSelectedUser(user);
@@ -70,6 +77,18 @@ export default function UsersList() {
     setName(e.target.value); 
   };
 
+  // const getEmailValue = (e) => {
+  //   setEmail(e.target.value);
+  //   setCurrentPage(1)
+  // };
+
+  const getEmailValue = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    console.log(value)
+  };
+  
+
   return (
     <>
       <Header
@@ -82,10 +101,15 @@ export default function UsersList() {
 
       <div className="container py-3">
         <div className="row align-items-center">
-          <div className="col-md-6 my-1">
+          <div className="col-md-4 my-1">
             <input type="text" className="form-control" placeholder="Search..." onChange={getNameValue} />
           </div>
-          <div className="col-md-6 my-1">
+
+          <div className="col-md-4 my-1">
+          <input type="text" className="form-control" placeholder="Search By Email" onChange={getEmailValue} />
+    </div>
+          
+          <div className="col-md-4 my-1">
             <select className="form-control" onChange={getGroupValue}>
               <option value="">Role</option>
               <option value={1}>Admin</option>
@@ -99,7 +123,7 @@ export default function UsersList() {
         <>
           {usersList.length > 0 ? (
             <>
-              {/* جدول المستخدمين (يظهر فقط على الشاشات الكبيرة) */}
+              
               <div className="container d-none d-md-block">
                 <table className="table text-center table-striped table-hover">
                   <thead>
@@ -145,9 +169,9 @@ export default function UsersList() {
   {dropdownOpen === user.id && (
     <div
       className="dropdown-menu show position-absolute bg-light shadow rounded p-2"
-      style={{ top: "100%", right: 0, zIndex: 1000 }} // تحديد الموقع بدقة
+      style={{ top: "100%", right: 0, zIndex: 1000 }} 
     >
-      <button className="dropdown-item d-flex align-items-center">
+      <button className="dropdown-item d-flex align-items-center" onClick={() => { setSelectedUser(user); handleShow(); }}>
         <i className="far fa-eye me-2"></i> View
       </button>
       <button
@@ -166,7 +190,7 @@ export default function UsersList() {
                 </table>
               </div>
 
-              {/* كروت المستخدمين (تظهر فقط على الشاشات الصغيرة) */}
+              {/**Mobile */}
               <div className="container d-md-none">
                 <div className="row">
                   {usersList.map((user, index) => (
@@ -184,7 +208,10 @@ export default function UsersList() {
   </span></p>
                           <p className="card-text"><strong>Country:</strong> {user.country}</p>
                           <p className="card-text"><strong>Phone:</strong> {user.phoneNumber}</p>
-                          <button className="btn btn-outline-danger btn-sm w-100" onClick={() => setShowDeleteModal(true)}>
+                          <button className="btn btn-outline-success btn-sm w-100 mb-1" onClick={() => { setSelectedUser(user); handleShow(); }}>
+                            <i className="fas fa-trash-alt"></i> View
+                          </button>
+                          <button className="btn btn-outline-success btn-sm w-100" onClick={() => setShowDeleteModal(true)}>
                             <i className="fas fa-trash-alt"></i> Delete
                           </button>
                         </div>
@@ -193,6 +220,45 @@ export default function UsersList() {
                   ))}
                 </div>
               </div>
+
+              <Modal show={show} onHide={handleClose} animation={true} className='mt-3'>
+      <Modal.Header closeButton className='px-4'>
+        <Modal.Title >User Details</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="container d-flex flex-column">
+          
+          <div className="recipe-data">
+                      <div className='mb-2 text-capitalize text-center p-3 border-bottom'>
+  <h2>{selectedUser?.userName}</h2>
+  
+                      </div>
+                      
+                      <div className="text-center mb-2">
+                      <p className={`text-white fw-light w-50 m-auto px-3 rounded-pill shadow-lg ${
+    selectedUser?.group?.name === "SystemUser"
+      ? "bg-warning text-dark"  
+      : selectedUser?.group?.name === "SuperAdmin"
+      ? "bg-success"             
+      : "bg-secondary"           
+  }`}>
+    <span className='fw-medium fs-3'>{selectedUser?.group?.name === "SystemUser" ? "User" : "Admin"}</span>
+  </p>
+                      </div>
+
+            <div className='text d-flex justify-content-between text-left'>
+              <p><span className='fw-bold'>Email: </span> {selectedUser?.email}</p>
+              <p><span className='fw-bold'>Id: </span> {selectedUser?.id}</p>
+            </div>
+            <div className='text d-flex justify-content-between text-left'>
+              <p><span className='fw-bold'>Phone Number: </span> {selectedUser?.phoneNumber}</p>
+              <p className=''><span className='fw-bold'>Country: </span>{selectedUser?.country}</p>
+            </div>
+          </div>
+
+        </div>
+      </Modal.Body>
+    </Modal>
 
               <nav aria-label="Page navigation">
   <ul className="pagination justify-content-center">

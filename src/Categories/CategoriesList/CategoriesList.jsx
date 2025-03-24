@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Shared/Header/Header";
 import headimg from "../../assets/Imgs/recipes-head.png";
 import axios from "axios";
-import NoData from "../../assets/Imgs/No-data.png";
+import NoData from "../../Shared/NoData/NoData";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import { axiosInstance, CATEGORIES_URLS, privateAxiosInstance } from "../../Services/Urls/Urls";
@@ -12,6 +12,7 @@ import CategoriesData from "../CategoriesData/CategoriesData";
 import Delete from '../../assets/Imgs/Delete.png'
 import Pagination from "../../Shared/Pagination/Pagination";
 import Preloader from "../../Shared/Preloader/Preloader";
+import { Modal } from "react-bootstrap";
 
 
 export default function CategoriesList() {
@@ -26,7 +27,11 @@ export default function CategoriesList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(3); 
   const [name, setName] = useState('')
+  const [show, setShow] = useState(false);
 
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
 
   
@@ -202,7 +207,7 @@ export default function CategoriesList() {
 
                     {dropdownOpen === category.id && (
                       <div className="dropdown-menu show position-absolute" style={{ right: 0 }}>
-                        <button className="dropdown-item d-flex align-items-center">
+                        <button className="dropdown-item d-flex align-items-center" onClick={() => { handleShow(); setSelectedCategory(category); }}>
                           <i className="far fa-eye me-2"></i> View
                         </button>
                         <button className="dropdown-item d-flex align-items-center" onClick={() => handleEditClick(category)}>
@@ -241,7 +246,7 @@ export default function CategoriesList() {
                       <strong>Created on:</strong> {category.creationDate}
                     </p>
                     <div className="d-flex justify-content-between">
-                      <button className="btn btn-outline-success btn-sm">
+                      <button className="btn btn-outline-success btn-sm" onClick={() => { handleShow(); setSelectedCategory(category); }}>
                         <i className="far fa-eye me-1"></i> View
                       </button>
                       <button className="btn btn-outline-success btn-sm" onClick={() => handleEditClick(category)}>
@@ -257,15 +262,34 @@ export default function CategoriesList() {
             ))}
           </div>
         ) : (
-          <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
-            <img src={NoData} alt="No Data" />
-          </div>
+          <NoData/>
         )}
       </div>
       
     </div>
   </div>
        
+  <Modal show={show} onHide={handleClose} animation={true} className='mt-5'>
+      <Modal.Header closeButton className='px-4'>
+        <Modal.Title>Category details</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="container d-flex flex-column mb-3">
+
+          <div className="Category-data">
+            <div >
+              <h2>Name : {selectedCategory?.name}</h2>
+                </div>
+                
+                <div >
+              <h2>Id : {selectedCategory?.id}</h2>
+                </div>
+                
+
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
         
         <nav aria-label="Page navigation example">
   <ul className="pagination justify-content-center">

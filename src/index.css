@@ -179,12 +179,12 @@ background-size: auto;
 }
 
 .table tbody th{
-  padding: 25px 40px;
+  /* padding: 25px 40px; */
   align-items: center;
 }
 
 .table tbody td{
-  padding: 25px 40px;
+  /* padding: 25px 40px; */
   align-items: center;
 }
 

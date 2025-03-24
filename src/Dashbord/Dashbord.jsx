@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Dashbord() {
   const [username, setUsername] = useState('');
+  const [userGroup, setUserGroup] = useState(null);
 
   useEffect(() => {
   
@@ -13,7 +14,8 @@ export default function Dashbord() {
     if (token) {
     try {
             const decodedToken = jwtDecode(token);
-            setUsername(decodedToken.userName || 'User'); 
+      setUsername(decodedToken.userName || 'User'); 
+      setUserGroup(decodedToken?.userGroup);
             console.log(decodedToken);
           } catch (error) {
             console.error('Invalid token', error);
@@ -34,14 +36,15 @@ export default function Dashbord() {
   img={<img src={headimg} alt="Header Image" />}
 />
 
-      
-      <div className='dashbord px-3'>
+{userGroup !== "SystemUser" && (<div className='dashbord px-3'>
         <div className="container-fluid">
           <div className=' d-flex flex-column flex-md-row justify-content-between align-items-center dsh rounded-4 p-5'>
             <div className='dsh-title'>
               <h2>Fill the <span style={{color:"#009247"}}>Recipes</span> !</h2>
               <p>you can now fill the meals easily using the table and form , click here and sill it with the table !</p>
             </div>
+
+            
             <div className='btn-dsh'>
   <Link to="recpies/new-recpie" className="btn btn-success butn px-5">
     Fill Recipes <i className="fa-solid fa-arrow-right"></i>
@@ -49,7 +52,8 @@ export default function Dashbord() {
 </div>
           </div>
         </div>
-      </div>
+      </div>)}
+      
 
     </>
   )

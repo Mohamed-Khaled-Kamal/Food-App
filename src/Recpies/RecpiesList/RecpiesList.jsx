@@ -30,8 +30,10 @@ export default function RecipesList() {
   const [tagValue, setTagValue] = useState('')
   const [catValue, setCatValue] = useState('')
   const [userGroup, setUserGroup] = useState(null);
+  const [show, setShow] = useState(false)
 
-  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const GetRecipes = async (pageNumber = 1,name,tag,cat) => {
     try {
@@ -114,9 +116,7 @@ export default function RecipesList() {
   };
 
   const getNameValue = (e) => {
-    // console.log(e.target.value)
     setName(e.target.value)
-    // GetRecipes(1,e.target.value,tagValue,catValue)
     GetRecipes(1,e.target.value,tagValue,catValue)
 }
 
@@ -277,7 +277,7 @@ const getTagValue = (e) => {
 
                       {dropdownOpen === recipe.id && (
   <div className="dropdown-menu show position-absolute bg-light shadow rounded p-2" style={{ right: 0, top: '1.5rem' }}>
-    <button className="dropdown-item d-flex align-items-center">
+    <button className="dropdown-item d-flex align-items-center" onClick={() => { setSelectedRecipe(recipe); handleShow(); }}>
       <i className="far fa-eye me-2"></i> View
     </button>
 
@@ -329,25 +329,29 @@ const getTagValue = (e) => {
                             <p className="card-text"><strong>Category:</strong> {recipe.category?.[0]?.name || "No Category"}</p>
                           </div>
                           <div className="d-flex justify-content-between mt-3 p-2">
-                {/* زر العرض */}
-                <button className="btn btn-outline-success">
+                
+                {/* <button className="btn btn-outline-success" onClick={() =>  setSelectedRecipe(recipe) }>
                   <i className="far fa-eye me-1"></i> View
-                </button>
+                </button> */}
+                            <button className="btn btn-outline-success" onClick={() => { setSelectedRecipe(recipe); handleShow(); }}>
+                              <i className="far fa-eye me-1"></i> View
+                            </button>
+
 
                 {userGroup !== "SystemUser" ? (
                   <>
-                    {/* زر التعديل */}
+                    
                     <Link to={`${recipe.id}`} className="btn btn-outline-success">
                       <i className="fas fa-edit me-1"></i> Edit
                     </Link>
 
-                    {/* زر الحذف */}
+                    
                     <button className="btn btn-outline-success" onClick={() => handleDeleteClick(recipe)}>
                       <i className="fas fa-trash-alt me-1"></i> Delete
                     </button>
                   </>
                 ) : (
-                  /* زر الإضافة إلى المفضلة */
+                 
                   <button className="btn btn-outline-success" onClick={() => addToFavourite(recipe.id)}>
                     <i className="far fa-heart me-1"></i> Favorites
                   </button>
@@ -362,6 +366,44 @@ const getTagValue = (e) => {
                 )}
               </div>
       </div>
+
+      {/* Modal View */}
+
+      <Modal show={show} onHide={handleClose} animation={true} className='mt-3'>
+      <Modal.Header closeButton className='px-4'>
+        <Modal.Title>Recipe details</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="container d-flex flex-column">
+          <div className="recipe-image d-flex justify-content-center position-relative">
+            <img style={{ maxWidth: 250, height: 250, objectFit: 'cover' }} loading='lazy' className='img-fluid w-100 rounded-4 my-3' src={selectedRecipe?.imagePath ? `${ImgUrl}/${selectedRecipe?.imagePath}` : `${NoImg}`} alt="Recipe Image" />
+          </div>
+          <div>
+            <h3 className='mb-2 text-capitalize text-center p-3 border-bottom '>
+              {selectedRecipe?.name}
+            </h3>
+            <div className='text d-flex justify-content-between'>
+              <p><span className='fw-bold'>Description: </span> {selectedRecipe?.description}</p>
+            </div>
+            <div >
+              <p><span className='fw-bold'>Tag: </span> {selectedRecipe?.tag?.name}</p>
+              <p className=''><span className='fw-bold'>Category: </span>{selectedRecipe?.category?.[0].name}</p>
+              </div>
+              <div className='text-center'>
+              <p className='badge bg-success fs-3'> Price: {selectedRecipe?.price} $</p>
+            </div>
+          </div>
+
+        </div>
+      </Modal.Body>
+      {userGroup === 'SuperAdmin' ?  <>
+      
+      </> :  <Modal.Footer>
+        <Button disabled={loading} variant="outline-dark" onClick={() => { addToFav(selectedRecipe?.id); }}>
+          {loading ? <i className='fas fa-spin fa-spinner'></i> : 'Add To Favorites'}
+        </Button>
+      </Modal.Footer>}
+    </Modal>
 
 <nav aria-label="Page navigation">
   <ul className="pagination justify-content-center">
